@@ -14,9 +14,11 @@ import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angul
   templateUrl: 'busino-home.html',
 })
 export class BusinoHomePage {
-
+  homeSegments: Array<string> = ['Theo dõi xe', 'Tìm đường'];
+  bottomColor = "orange";
+  rightColor = "lightgrey";
   constructor(public navCtrl: NavController,
-     public navParams: NavParams,
+    public navParams: NavParams,
     public mMenuController: MenuController) {
 
   }
@@ -25,4 +27,12 @@ export class BusinoHomePage {
     console.log('ionViewDidLoad BusinoHomePage');
   }
 
+  openMenu() {
+    this.mMenuController.open();
+  }
+
+  onChangeView(number){
+    console.log("from page: " + number);
+
+  }
 }

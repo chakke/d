@@ -14,4 +14,5 @@ export class BusinoCmd {
   public static BR_LIST_BUS: string = "bus_route/list_bus";
 
   public static APP_DATA: string = "app/data_version";
+  public static BUS_UPDATE_LOCATION: string = "bus/update_location";
 }

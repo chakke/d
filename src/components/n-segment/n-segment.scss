@@ -1,0 +1,13 @@
+n-segment {
+    .segment-container {}
+    .segment-item {
+        width: 100%;
+    }
+    .segment-selected {
+        font-weight: bold;
+        border-bottom: 3px solid;
+    }
+    .border-right {
+        border-right: 1px solid;
+    }
+}

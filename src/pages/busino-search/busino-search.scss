@@ -1,0 +1,24 @@
+page-busino-search {
+    $header-height: 90px;
+    ion-content {
+        .scroll-content {
+            padding: $header-height 0 0 0 !important;
+        }
+    }
+    .search-box-container {
+        height: 60px;
+        width: 100%;
+        margin-top: 90px;
+        z-index: 100;
+        padding: 8px 0;
+        background: #e6e3e3;
+        #a-searchbar {
+            border: none !important;
+            background: transparent !important;
+            .searchbar-input {
+                border-radius: 10px;
+                border: 1px solid #FDC21E;
+            }
+        }
+    }
+}

@@ -40,10 +40,11 @@ export class AppDataController {
                             resolve();
                         }, rej => {
                             reject();
-                        })
+                        });
                     }
                     else {
                         console.log("Current Data is lastest");
+                        reject();
                     }
 
                 }
@@ -56,20 +57,23 @@ export class AppDataController {
 
     requestAppData(url: string) {
         return new Promise((resolve, reject) => {
-            this.mHttpService.getHttp().get(url).subscribe(data => {
+            this.mHttpService.getHttp().get(url).subscribe((data) => {
                 this.mAppData.onResponseData(data.json()).then((res) => {
                     console.log(res);
-                    
+
                     // this.onResponseSearchData(this.mAppData.data);
                     resolve();
                 }, (rej) => {
                     reject();
                 });
+            }, (error) => {
+                console.log(error);
+                reject();
             });
         });
     }
 
-    getAppData(){
+    getAppData() {
         return this.mAppData;
     }
 }

@@ -1,0 +1,8 @@
+<ion-content padding no-bounce id="main-content">
+    <div *ngFor="let i of [1,1,1,1,1,1,1,1,1,1,1,1]" style="height: 20px">{{i}}</div>
+</ion-content>
+
+<n-header-segment [title]="title" [segments]="segments" [root]="root" [bgcolor]="bgcolor" [color]="color" (segmentIndex)="onChangeView($event)"></n-header-segment>
+<div class="search-box-container a3-container a3-items-center a3-justify-center a1-absolute">
+    <ion-searchbar #mSearchBar id="a-searchbar" [(ngModel)]="mSearchInput" [showCancelButton]="mShouldShowCancel" (ionInput)="onSearchInput()" (ionCancel)="onSearchCancel()" [placeholder]="mPlaceholder" (tap)="scrollToTop()"> </ion-searchbar>
+</div>

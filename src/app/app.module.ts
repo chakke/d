@@ -6,6 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
+import { ComponentsModule } from '../components/components.module';
 
 import { IonicStorageModule } from '@ionic/storage';
 import { Device } from '@ionic-native/device';
@@ -14,6 +15,8 @@ import { HttpService } from '../providers/http-service';
 import { BusinoModule } from '../providers/busino/busino';
 import { DeviceInfoProvider } from '../providers/device-info/device-info';
 
+
+
 @NgModule({
   declarations: [
     MyApp
@@ -21,6 +24,7 @@ import { DeviceInfoProvider } from '../providers/device-info/device-info';
   imports: [
     BrowserModule,
     HttpModule,
+    ComponentsModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot()
   ],

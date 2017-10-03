@@ -23,7 +23,9 @@ export class MyApp {
 
     // set our app's pages
     this.pages = [
-      { title: 'BusinoHomePage', component: "BusinoHomePage" },
+      { title: 'Trang chủ', component: "BusinoHomePage" },
+      { title: 'Tra cứu', component: "BusinoSearchPage" },
+      { title: 'Tin buýt', component: "BusinoNewsPage" },
 
     ];
 

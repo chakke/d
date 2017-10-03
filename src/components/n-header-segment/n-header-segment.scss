@@ -1,0 +1,23 @@
+n-header-segment {
+    .container {
+        position: absolute;
+        z-index: 100;
+        width: 100%;
+    }
+    .title-container {
+        font-weight: bold;
+    }
+    .segment-container {
+        height: 40px;
+    }
+    .segment-item {
+        width: 100%;
+    }
+    .segment-selected {
+        font-weight: bold;
+        border-bottom: 3px solid #E14B4C;
+    }
+    .border-right {
+        border-right: 1px solid;
+    }
+}

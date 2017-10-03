@@ -1,0 +1,13 @@
+<div class="container" [style.background-color]="bgcolor" [style.color]="color">
+    <div class="a1-width-100 a3-container title-container">
+        <div padding (tap)="onClickClose()">
+            <ion-icon name="ios-arrow-back-outline"></ion-icon>
+        </div>
+        <div padding>
+            <span>{{title}}</span>
+        </div>
+    </div>
+    <div class="a1-width-100 a3-container segment-container">
+        <div *ngFor="let s of segments; let i = index" class="segment-item a3-container a3-items-center a3-justify-center" (tap)="onClickSegment(i)" [class.segment-selected]="i==currentSegment" [class.border-right]="i<segments.length-1">{{s}}</div>
+    </div>
+</div>

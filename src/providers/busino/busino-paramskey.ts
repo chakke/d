@@ -34,5 +34,6 @@ export class BusinoParamsKey {
     public static RETURN_POLYLINE: string = "return_polyline";
     public static RANGE: string = "range";
     public static COUNT: string = "count";
+    public static DIRECT_TYPE: string = "direct_type";
 
 }

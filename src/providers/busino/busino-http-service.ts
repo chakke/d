@@ -16,6 +16,11 @@ export class BusinoHttpService {
     this.mHttpService = httpService;
     this.createHeaders();
   }
+  onLoadedConfig(data) {
+    this.SERVICE_URL = data.service_url;
+    this.CLIENT_KEY = data.client_key;
+    this.DEVICE_ID = data.device_id;
+  }
   setDeviceID(deviceID: string) {
     this.DEVICE_ID = deviceID;
   }
@@ -172,4 +177,13 @@ export class BusinoHttpService {
       .build());
   }
 
+  RequestBustUpdateLocation(routeCode: string, bks: string, lat: number, lng: number, direct_type: number) {
+    return this.requestGet("http://125.212.192.94:3000/" + BusinoCmd.BUS_UPDATE_LOCATION, ParamBuilder.builder()
+    .add(BusinoParamsKey.ROUTE_CODE, routeCode)
+    .add(BusinoParamsKey.BKS, bks)
+    .add(BusinoParamsKey.LAT, lat)
+    .add(BusinoParamsKey.LNG, lng)
+    .add(BusinoParamsKey.DIRECT_TYPE, direct_type)
+    .build());
+  }
 }

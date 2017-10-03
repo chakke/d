@@ -1,0 +1,12 @@
+{
+    "connection_config": {
+        "service_url": "http://125.212.192.94:3000/busino_app/ws/",
+        "client_key": "8c24516c23b611420defccf253598412",
+        "device_id": "appinasia_macbookpro"
+    },
+    "bus_config": {
+        "speed": 20,
+        "max_bus_for_route": 30,
+        "time_update_location": 5
+    }
+}

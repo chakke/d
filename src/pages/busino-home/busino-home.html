@@ -1,8 +1,10 @@
-<ion-content padding>
-
+<ion-content padding no-bounce>
+    <div class="n-segment-container">
+        <n-segment [segments]="homeSegments" [bottomColor]="bottomColor" [rightColor]="rightColor" (segmentIndex)="onChangeView($event)"></n-segment>
+    </div>
 </ion-content>
-<div class="header a3-container">
-    <div menuToggle padding>
+<div class="header a3-container a3-justify-between">
+    <div padding (tap)="openMenu()">
         <ion-icon name="ios-menu-outline"></ion-icon>
     </div>
     <div padding>BUSINO</div>

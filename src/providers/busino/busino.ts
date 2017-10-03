@@ -1,10 +1,18 @@
 
 import { Injectable } from '@angular/core';
-import { BusinoHttpService } from "./busino-http-service";
+import { Storage } from "@ionic/storage";
+
 import { HttpService } from "../http-service";
 import { ResponseCode, RequestState, LoginStatus } from '../app-constant';
 import { Utils } from '../app-utils';
-import { Storage } from "@ionic/storage";
+import { AppLoop } from '../app-loop';
+
+import { BusinoHttpService } from "./busino-http-service";
+import { BusinoConfig } from "./busino-config";
+
+import { BusinoData } from './controller/busino-data';
+import { BusController } from './controller/bus-controller';
+import { BusLocationController } from './controller/bus-location-controller';
 
 // import { BusRouteController } from './controller/bus-route-controller';
 import { AppDataController } from './controller/app-data-controller';
@@ -14,30 +22,39 @@ import { AppDataController } from './controller/app-data-controller';
 
 @Injectable()
 export class BusinoModule {
-  currentAddress: string = "";
+  private mBusinoHttpService: BusinoHttpService;
+
+  private mConfig: BusinoConfig;
+
+  private mBusData: BusinoData;
+
+  private mBusController: BusController;
+
+  private mBusLocationController: BusLocationController;
+
+  currentVersion: string = "";
 
   mAnimationFrameID: number = -1;
 
   mAnimationFrameRunning: boolean = false;
 
-  mBusinoHttpService: BusinoHttpService;
+  private mAppDataController: AppDataController;
 
-  // mBusRouteController: BusRouteController;
+  constructor(private mHttpService: HttpService) {
 
-  mAppDataController: AppDataController;
-  // mSimuBusController: SimuBusController;
-  // mBusStopController: BusStopController;
-  // mSearchPathController: SearchPathController;
+    this.mBusinoHttpService = new BusinoHttpService(mHttpService);
 
-  constructor(
-    private mStorage: Storage,
-    private mHttpService: HttpService) {
-    this.mBusinoHttpService = new BusinoHttpService(this.mHttpService);
-    // this.mBusRouteController = new BusRouteController();
-    this.mAppDataController = new AppDataController(this.mHttpService);
-    // this.mSimuBusController = new SimuBusController(this.mAppDataController);
-    // this.mBusStopController = new BusStopController(this.mAppDataController);
-    // this.mSearchPathController = new SearchPathController();
+    this.mConfig = new BusinoConfig();
+
+    this.mBusData = new BusinoData();
+
+    AppLoop.getInstance().scheduleUpdate(this);
+
+    this.mBusController = new BusController();
+
+    this.mBusLocationController = new BusLocationController(this.mBusinoHttpService);
+
+    this.mAppDataController = new AppDataController(mHttpService);
   }
   start() {
     this.scheduleUpdate();
@@ -47,7 +64,7 @@ export class BusinoModule {
   scheduleUpdate() {
     this.mAnimationFrameRunning = true;
     this.mAnimationFrameID = requestAnimationFrame(() => {
-      this.onUpdate();
+      // this.onUpdate();
       if (this.mAnimationFrameRunning) this.scheduleUpdate();
     });
   }
@@ -57,43 +74,141 @@ export class BusinoModule {
     this.mAnimationFrameRunning = false;
   }
 
-  onUpdate() {
 
-  }
-
+  /**===================Get Functions=================== */
   getHttpService() {
     return this.mBusinoHttpService;
   }
+  getAppConfig() {
+    return this.mConfig;
+  }
+  getBusController() {
+    return this.mBusController;
+  }
+  loadConfig() {
+    return new Promise((resolve, reject) => {
+      if (this.mBusData.mRoutes.size > 0) {
+        resolve();
+        return;
+      } else {
+        this.mHttpService.getHttp().request("assets/config/busino.json").subscribe(
+          data => {
+            this.onLoadedConfig(data.json());
+            this.mHttpService.getHttp().request("assets/config/busdata.json").subscribe(
+              data => {
+                this.onLoadedBusData(data.json())
+                resolve();
+              }
+            );
+          }
+        );
+      }
+    });
+  }
+
+  getBusData() {
+    return this.mBusData;
+  }
+  onLoadedBusData(data) {
+    console.log("onLoadedBusData", data);
+
+    this.mBusData.onResponse(data.routes);
+    this.mBusData.mRoutes.forEach(route => {
+      this.mBusController.createBusRoute(route);
+    });
+    this.mBusController.setLocationController(this.mBusLocationController);
+    this.mBusController.startMove();
+  }
+  onLoadedConfig(data) {
+    this.mConfig.onResponseConfig(data);
+    this.getHttpService().onLoadedConfig(data.connection_config);
+  }
+  onUpdate() {
+    this.mBusController.onUpdate();
+    this.mBusLocationController.onUpdate();
+  }
+  /**============================================== */
+
 
   testRequest() {
     this.mBusinoHttpService.testRequest();
   }
 
-  doLoadBusRoute() {
-    // if (this.mBusRouteController.ready()) return;
-    // if (this.mBusRouteController.getRequestState() == RequestState.REQUESTING) return;
-    // this.mBusRouteController.setRequestState(RequestState.REQUESTING);
-    // this.getHttpService().RequestBusRouteList("0-90").then(
-    //   (data) => {
-    //     this.mBusRouteController.onResponseBusRoutes(data);
-    //     this.mBusRouteController.setRequestState(RequestState.READY);
-    //   }
-    // );
-  }
 
-  getBusRoutes() {
-    // return this.mBusRouteController.getBusRoutes();
-  }
 
   doLoadAppData() {
     if (this.mAppDataController.ready()) return;
     if (this.mAppDataController.getRequestState() == RequestState.REQUESTING) return;
     this.mAppDataController.setRequestState(RequestState.REQUESTING);
     this.getHttpService().RequestAppData().then((data) => {
+
+      // this.onLoadAppData(data).then((abc) => {
+      //   console.log("abc", abc);
+
+      // });
+      // this.loadConfig().then(() => {
+      //   console.log("rej", this.mBusData);
+
+      // });
       this.mAppDataController.onResponseData(data).then(() => {
-        // console.log(data);
-        
+        console.log("res", data);
+
         // this.mSimuBusController.onResponseData(this.getAppData().data)
+      }, () => {
+        this.loadConfig().then(() => {
+          console.log("rej", this.mBusData);
+
+        });
+      });
+    });
+  }
+
+  onLoadAppData(data) {
+    return new Promise(
+      (resolve, reject) => {
+        let lastestVersion: string = data.last_bus_data_version;
+        let url: string = data.link_download_bus_data;
+
+        if (data) {
+          if (this.currentVersion != data.last_bus_data_version) {
+            this.requestAppData(url).then(res => {
+
+              resolve();
+            }, rej => {
+              reject();
+            });
+          }
+          else {
+            console.log("Current Data is lastest");
+            reject();
+          }
+
+        }
+        else {
+          reject();
+        }
+      }
+    )
+  }
+
+  requestAppData(url: string) {
+    return new Promise((resolve, reject) => {
+      this.mHttpService.getHttp().get(url).subscribe((data) => {
+        
+        this.onLoadedBusData(data.json())
+
+
+        // this.mAppData.onResponseData(data.json()).then((res) => {
+        //     console.log(res);
+
+        //     // this.onResponseSearchData(this.mAppData.data);
+        resolve();
+        // }, (rej) => {
+        //     reject();
+        // });
+      }, (error) => {
+        console.log(error);
+        reject();
       });
     });
   }
@@ -114,7 +229,7 @@ export class BusinoModule {
     // return this.mSimuBusController;
   }
 
-  getBusStopController(){
+  getBusStopController() {
     // return this.mBusStopController;
   }
 
@@ -130,7 +245,7 @@ export class BusinoModule {
     // this.mAppDataController.setSearchHistory(searchHistory);
   }
 
-  getBotSearchData(){
+  getBotSearchData() {
     // return this.mSimuBusController.getBotSearchData();
   }
 
@@ -138,29 +253,29 @@ export class BusinoModule {
     // return this.mAppDataController.onResponseAddress(data).then(data => {
 
     //   console.log("address data", data);
-      
+
     //   this.setCurrentAddress(data['results'][0].formatted_address);
     // });
   }
 
-  setCurrentAddress(currentAddress: string) {
-    this.currentAddress = currentAddress;
-  }
+  // setCurrentAddress(currentAddress: string) {
+  //   this.currentAddress = currentAddress;
+  // }
 
-  getCurrentAddress() {
-    return this.currentAddress;
-  }
+  // getCurrentAddress() {
+  //   return this.currentAddress;
+  // }
 
 
-  getBusStopData(){
+  getBusStopData() {
     // return this.mBusStopController.getBusStopData();
   }
 
-  getSearchPathController(){
+  getSearchPathController() {
     // return this.mSearchPathController;
   }
 
-  getResultPath(){
+  getResultPath() {
     // return this.mSearchPathController.getResultPath();
   }
 
