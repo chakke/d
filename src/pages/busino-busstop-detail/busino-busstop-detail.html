@@ -1,0 +1,58 @@
+<ion-content padding no-bounce>
+    <div class="a1-margin-top">
+        <div class="station-name a3-container a3-justify-center a1-margin-bottom">{{mStation.name}}</div>
+        <div class="station-info">Đường: {{address}}</div>
+        <div class="station-info">Tuyến đi qua: {{mStation.fleetOver}}</div>
+    </div>
+    <div class="btm-side">
+        <div class="a3-container" (tap)="onClickFollowBus()">
+            <div class="icon-container a3-container a3-items-center">
+                <img src="assets/clock.png">
+            </div>
+            <div padding class="text-container a1-width-100">
+                <span>Xe sắp tới điểm dừng</span>
+                <ion-icon style="float: right" name="ios-arrow-forward-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="a3-container" (tap)="onClickSaveStation()">
+            <div class="icon-container a3-container a3-items-center">
+                <img src="assets/star.png">
+            </div>
+            <div type="button" padding class="text-container a1-width-100">
+                <span>Lưu vào danh sách yêu thích</span>
+                <ion-icon style="float: right" name="ios-arrow-forward-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="a3-container" (tap)="onClickFromHere()">
+            <div class="icon-container a3-container a3-items-center">
+                <img src="assets/pin-a.png">
+            </div>
+            <div padding class="text-container a1-width-100">
+                <span>Chỉ đường từ đây</span>
+                <ion-icon style="float: right" name="ios-arrow-forward-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="a3-container" (tap)="onClickToHere()">
+            <div class="icon-container a3-container a3-items-center">
+                <img src="assets/pin-b.png">
+            </div>
+            <div padding class="text-container a1-width-100">
+                <span>Chỉ đường tới đây</span>
+                <ion-icon style="float: right" name="ios-arrow-forward-outline"></ion-icon>
+            </div>
+        </div>
+    </div>
+</ion-content>
+<div class="container" [style.background-color]="bgcolor" [style.color]="color">
+    <div class="title-container a1-width-100 a3-container a3-justify-between">
+        <div padding (tap)="onClickClose()">
+            <ion-icon name="ios-arrow-back-outline"></ion-icon>
+        </div>
+        <div padding>
+            <span>{{title}}</span>
+        </div>
+        <div padding>
+            <ion-icon name="ios-pin-outline"></ion-icon>
+        </div>
+    </div>
+</div>

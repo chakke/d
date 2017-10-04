@@ -1,0 +1,41 @@
+page-busino-busstop-detail {
+    $header-height: 50px;
+    ion-content {
+        .scroll-content {
+            padding-top: $header-height !important;
+        }
+    }
+    .container {
+        position: absolute;
+        z-index: 100;
+        width: 100%;
+    }
+    .title-container {
+        font-weight: bold;
+        height: 50px;
+        font-size: 1.2em;
+    }
+    .station-name {
+        font-size: 1.2em;
+        color: #FDC21E;
+    }
+    .station-info {
+        border-bottom: 1px solid lightgrey;
+        padding: 16px 0;
+    }
+    .btm-side {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+    }
+    .icon-container {
+        margin: 0 16px;
+        width: 2em;
+    }
+    .text-container {
+        padding-left: 0 !important;
+        border-bottom: 1px solid lightgrey;
+    }
+}

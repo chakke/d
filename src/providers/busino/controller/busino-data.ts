@@ -8,6 +8,14 @@ export class BusinoData {
 
     }
 
+    getRoutes(){
+        return this.mRoutes;
+    }
+
+    getStations(){
+        return this.mStations;
+    }
+
     getRouteByCode(code: string): Route {
         if (this.mRoutes.has(code)) return this.mRoutes.get(code);
         return null;
@@ -18,8 +26,7 @@ export class BusinoData {
         return null;
     }
 
-    onResponse(data) {
-
+    onResponse(data) {        
         this.mRoutes.clear();
         this.mStations.clear();
         for (let routeData of data) {

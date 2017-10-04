@@ -1,14 +1,18 @@
 page-busino-search {
     $header-height: 90px;
+    $search-header-height: 150px;
+    $content-height: calc(100% - 150px);
+    $map-height: calc((100% - 150px)/2);
     ion-content {
         .scroll-content {
-            padding: $header-height 0 0 0 !important;
+            background-color: white;
+            box-shadow: 0px 2px 6px 0px grey;
         }
     }
     .search-box-container {
         height: 60px;
         width: 100%;
-        margin-top: 90px;
+        margin-top: $header-height;
         z-index: 100;
         padding: 8px 0;
         background: #e6e3e3;
@@ -20,5 +24,76 @@ page-busino-search {
                 border: 1px solid #FDC21E;
             }
         }
+    }
+    #main-content {
+        ion-list {
+            top: $search-header-height;
+            .item-block {
+                border-top: 0 !important;
+                height: 60px;
+            }
+            ion-item ion-label {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                display: -webkit-flex;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                -webkit-align-items: center;
+                margin: 0;
+                height: 100%;
+                width: 100%;
+            }
+            ion-item {
+                .item-inner {
+                    border-bottom: 0;
+                }
+            }
+        }
+    }
+    .item-code {
+        height: 3em;
+        width: 3em;
+        background: #FDC21E;
+        font-weight: bold;
+    }
+    .item-text {
+        max-width: calc(100% - 4em);
+        width: calc(100% - 4em);
+        height: 100%;
+        // font-size: .8em;
+        white-space: normal;
+        margin-left: 16px;
+        border-bottom: 1px solid #dedede;
+    }
+    .item-content-detail {
+        // font-size: smaller;
+    }
+    .virtual-hide {
+        overflow: hidden;
+        visibility: hidden;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        height: 0 !important;
+    }
+    .bs-name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .bs-fleetover {
+        font-size: .8em;
+        color: grey;
+    }
+    #map-listpage {
+        width: 100%;
+        height: $map-height;
+        background-color: black;
+        position: absolute;
+        bottom: 0;
     }
 }

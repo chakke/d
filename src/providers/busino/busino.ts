@@ -2,6 +2,8 @@
 import { Injectable } from '@angular/core';
 import { Storage } from "@ionic/storage";
 
+import { LatLng } from '@ionic-native/google-maps';
+
 import { HttpService } from "../http-service";
 import { ResponseCode, RequestState, LoginStatus } from '../app-constant';
 import { Utils } from '../app-utils';
@@ -96,7 +98,7 @@ export class BusinoModule {
             this.onLoadedConfig(data.json());
             this.mHttpService.getHttp().request("assets/config/busdata.json").subscribe(
               data => {
-                this.onLoadedBusData(data.json())
+                this.onLoadedBusData(data.json().routes)
                 resolve();
               }
             );
@@ -109,10 +111,17 @@ export class BusinoModule {
   getBusData() {
     return this.mBusData;
   }
-  onLoadedBusData(data) {
-    console.log("onLoadedBusData", data);
 
-    this.mBusData.onResponse(data.routes);
+  getBusRoutes() {
+    return this.mBusData.getRoutes();
+  }
+
+  getBusStation() {
+    return this.mBusData.getStations();
+  }
+
+  onLoadedBusData(data) {
+    this.mBusData.onResponse(data);
     this.mBusData.mRoutes.forEach(route => {
       this.mBusController.createBusRoute(route);
     });
@@ -141,24 +150,11 @@ export class BusinoModule {
     if (this.mAppDataController.getRequestState() == RequestState.REQUESTING) return;
     this.mAppDataController.setRequestState(RequestState.REQUESTING);
     this.getHttpService().RequestAppData().then((data) => {
+      this.onLoadAppData(data).then((res) => {
+        console.log("doLoadAppData", this.mBusData);
 
-      // this.onLoadAppData(data).then((abc) => {
-      //   console.log("abc", abc);
-
-      // });
-      // this.loadConfig().then(() => {
-      //   console.log("rej", this.mBusData);
-
-      // });
-      this.mAppDataController.onResponseData(data).then(() => {
-        console.log("res", data);
-
-        // this.mSimuBusController.onResponseData(this.getAppData().data)
-      }, () => {
-        this.loadConfig().then(() => {
-          console.log("rej", this.mBusData);
-
-        });
+      }, (rej) => {
+        this.loadConfig();
       });
     });
   }
@@ -172,7 +168,7 @@ export class BusinoModule {
         if (data) {
           if (this.currentVersion != data.last_bus_data_version) {
             this.requestAppData(url).then(res => {
-
+              this.onLoadedBusData(res)
               resolve();
             }, rej => {
               reject();
@@ -194,15 +190,14 @@ export class BusinoModule {
   requestAppData(url: string) {
     return new Promise((resolve, reject) => {
       this.mHttpService.getHttp().get(url).subscribe((data) => {
-        
-        this.onLoadedBusData(data.json())
+
 
 
         // this.mAppData.onResponseData(data.json()).then((res) => {
         //     console.log(res);
 
         //     // this.onResponseSearchData(this.mAppData.data);
-        resolve();
+        resolve(data.json());
         // }, (rej) => {
         //     reject();
         // });
@@ -249,14 +244,6 @@ export class BusinoModule {
     // return this.mSimuBusController.getBotSearchData();
   }
 
-  onResponseAddress(data) {
-    // return this.mAppDataController.onResponseAddress(data).then(data => {
-
-    //   console.log("address data", data);
-
-    //   this.setCurrentAddress(data['results'][0].formatted_address);
-    // });
-  }
 
   // setCurrentAddress(currentAddress: string) {
   //   this.currentAddress = currentAddress;
@@ -279,4 +266,30 @@ export class BusinoModule {
     // return this.mSearchPathController.getResultPath();
   }
 
+  requestAddress(data: LatLng) {
+    return new Promise((resolve, reject) => {
+      if (data) {
+        let url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + data.lat + "," + data.lng + "&sensor=false"
+
+        this.mHttpService.getHttp().get(url).subscribe(data => {
+          let addr = this.onResponseAddress(data.json());
+          resolve(addr);
+        })
+      }
+      else {
+        reject();
+      }
+    })
+  }
+
+  onResponseAddress(data) {
+    return data['results'][0].formatted_address;
+
+    // return this.mAppDataController.onResponseAddress(data).then(data => {
+
+    //   console.log("address data", data);
+
+    //   this.setCurrentAddress();
+    // });
+  }
 }

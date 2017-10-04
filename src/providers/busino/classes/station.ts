@@ -1,4 +1,5 @@
 import { LatLng } from '@ionic-native/google-maps';
+import { Utils } from '../../app-utils';
 
 export class Station {
 
@@ -7,7 +8,8 @@ export class Station {
     code: string = "";
     fleetOver: string = "";
     routes: Array<string> = [];
-    name: "";
+    name: string = "";
+    search: string = "";
 
     constructor() {
         this.reset();
@@ -19,6 +21,7 @@ export class Station {
         this.fleetOver = "";
         this.routes = [];
         this.name = "";
+        this.search = "";
     }
 
     onResponse(data) {
@@ -34,9 +37,25 @@ export class Station {
         for (let code of _codes) {
             this.routes.push(code);
         }
+        this.onSetUpSearchData();
     }
 
     getID() {
         return this.id;
+    }
+
+    onSetUpSearchData(){
+        let en: string = Utils.bodauTiengViet(this.name);
+        this.search = this.fleetOver + " " + en;// + " " + this.code;
+        let words = en.split(" ");
+        if (words.length > 1) {
+          this.search += " ";
+          for (let word of words) {
+            if (word.length > 0) {
+              this.search += word.charAt(0);
+            }
+          }
+        }
+
     }
 }

@@ -27,7 +27,9 @@ export class WayPoint {
             station.onResponse(stationData);
             this.stations.push(station);
         }
-        this.route_detail = data.route;
+        this.route_detail = data.Route;
     }
-
+    getRouteDetail(){
+        return this.route_detail;
+    }
 }

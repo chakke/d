@@ -5,14 +5,14 @@ import { NHeaderSegmentComponent } from './n-header-segment/n-header-segment';
 @NgModule({
 	declarations: [
 		NSegmentComponent,
-		NHeaderSegmentComponent
+		NHeaderSegmentComponent,
 	],
 	imports: [
 		IonicPageModule
 	],
 	exports: [
 		NSegmentComponent,
-		NHeaderSegmentComponent
+		NHeaderSegmentComponent,
 	]
 })
 export class ComponentsModule { }
