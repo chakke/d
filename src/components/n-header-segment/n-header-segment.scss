@@ -13,10 +13,11 @@ n-header-segment {
     }
     .segment-item {
         width: 100%;
+        border-bottom: 1px solid;
     }
     .segment-selected {
-        font-weight: bold;
-        border-bottom: 3px solid #E14B4C;
+        // font-weight: bold;
+        border-bottom: 3px solid;
     }
     .border-right {
         border-right: 1px solid;

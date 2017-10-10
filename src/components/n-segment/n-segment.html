@@ -1,6 +1,10 @@
-<div class="a1-fill-parent ">
-    <div class="a1-width-100 a1-fill-parent segment-container a3-container">
-        <div *ngFor="let s of segments; let i = index" class="segment-item a3-container a3-items-center a3-justify-center" (tap)="onClickSegment(i)" [class.segment-selected]="i==currentSegment" [class.border-right]="i<segments.length-1" [style.border-right-color]="rgtColor"
-            [style.border-bottom-color]="btmColor">{{s}}</div>
+<div class="container a1-fill-parent">
+    <div class="segment-container a1-width-100 a1-fill-parent a3-container">
+        <div *ngFor="let s of segments; let i = index" class="segment-item a3-container a3-items-center a3-justify-center" (tap)="onClickSegment(i)" [class.segment-selected]="i==currentSegment" [class.border-right]="i<segments.length-1" [ngStyle]="{'color': i==currentSegment?btmColor:rgtColor,'border-bottom-color': i==currentSegment?btmColor:rgtColor, 'border-right-color': rgtColor}">
+            <div class="img-container">
+                <img src="{{i==currentSegment?s.selectedImg:s.unSelectedImg}}">
+            </div>
+            <span>{{s.text}}</span>
+        </div>
     </div>
 </div>

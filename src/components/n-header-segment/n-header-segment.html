@@ -1,5 +1,6 @@
-<div class="container" [style.background-color]="bgcolor" [style.color]="color">
-    <div class="a1-width-100 a3-container a3-items-center title-container">
+<div class="container" [style.background-color]="bgcolor">
+    <div class="title-container a1-relative a1-width-100 a3-container a3-items-center" [style.color]="color">
+        <img class="a1-fill-parent a1-absolute" style="z-index: -1" [src]="bgimg">
         <div class="img-item" (tap)="onClickClose()">
             <ion-icon name="ios-arrow-back-outline"></ion-icon>
         </div>
@@ -11,6 +12,7 @@
         </div>
     </div>
     <div class="a1-width-100 a3-container segment-container">
-        <div *ngFor="let s of segments; let i = index" class="segment-item a3-container a3-items-center a3-justify-center" (tap)="onClickSegment(i)" [class.segment-selected]="i==currentSegment" [class.border-right]="i<segments.length-1">{{s}}</div>
+        <!-- <n-segment [segments]="segments" [btmColor]="btmColor" [rgtColor]="rgtColor" (segmentIndex)="onClickSegment(index)"></n-segment> -->
+        <div *ngFor="let s of segments; let i = index" class="segment-item a3-container a3-items-center a3-justify-center" (tap)="onClickSegment(i)" [class.segment-selected]="i==currentSegment" [class.border-right]="i<segments.length-1" [ngStyle]="{'color': i==currentSegment?btmColor:'black','border-bottom-color': i==currentSegment?btmColor:rgtColor, 'border-right-color': rgtColor}">{{s.text}}</div>
     </div>
 </div>

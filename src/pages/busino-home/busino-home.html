@@ -1,14 +1,61 @@
-<ion-content padding no-bounce>
-    <div class="n-segment-container">
-        <n-segment [segments]="homeSegments" [bottomColor]="bottomColor" [rightColor]="rightColor" (segmentIndex)="onChangeView($event)"></n-segment>
+<ion-content no-bounce>
+    <div #map id="map" class="a3-flex-1">
+        <div class="segment-search-bar">
+            <div class="a1-fill-parent shadow-around">
+                <div class="n-segment-container">
+                    <n-segment [segments]="homeSegments" [bottomColor]="bottomColor" [rightColor]="rightColor" (segmentIndex)="onChangeView($event)"></n-segment>
+                </div>
+                <div class="search-box-container a3-container a3-items-center a3-justify-center">
+                    <ion-searchbar *ngIf="currentView==0" #mSearchBar id="a-searchbar" [(ngModel)]="mSearchInput" [showCancelButton]="mShouldShowCancel" [placeholder]="mPlaceholder" (tap)="onClickSearchStation()"></ion-searchbar>
+                    <div *ngIf="currentView==1" class="a1-fill-parent">
+                        <div class="find-path-container a3-container a1-width-100">
+                            <div class="a3-container a3-column a3-justify-center">
+                                <div class="img-container a3-container a3-justify-center">
+                                    <img class="simg" src="assets/busino/marker_departure.png">
+                                </div>
+                                <div class="img-container a3-container a3-justify-center" style="margin: 4px 0">
+                                    <img class="simg" src="assets/busino/4dots.png">
+                                </div>
+                                <div class="img-container a3-container a3-justify-center">
+                                    <img class="simg" src="assets/busino/icon_arrival.png">
+                                </div>
+                            </div>
+                            <div class="a3-flex-1" style="padding: 1px">
+                                <div class="input-container" style="border-bottom: 1px solid lightgrey" (tap)="onClickFindPath(FROM)">
+                                    <ion-input placeholder="Chọn điểm đi"></ion-input>
+                                    <!-- <input class="a1-fill-parent" type="text" value="Chọn điểm đi"> -->
+                                </div>
+                                <div class="input-container" (tap)="onClickFindPath(TO)">
+                                    <ion-input placeholder="Chọn điểm đến"></ion-input>
+                                </div>
+                            </div>
+                            <div padding class="img-container a3-container a3-items-center a3-justify-center">
+                                <img style="width: 1.2em" src="assets/busino/btn_switch.png">
+                            </div>
+                        </div>
+                        <div class="buttons-container a1-width-100 a3-container a3-items-center a3-justify-center">
+                            <div class="btn" style="background-color: #FAC132">Xem lịch sử tìm đường</div>
+                            <div class="btn" style="background-color: #EA5153">TÌM ĐƯỜNG</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mylocation">
+            <img src="assets/busino/btn_mylocation.png">
+        </div>
     </div>
 </ion-content>
 <div class="header a3-container a3-justify-between">
-    <div padding (tap)="openMenu()">
-        <ion-icon name="ios-menu-outline"></ion-icon>
+    <img class="a1-fill-parent a1-absolute" style="z-index: -1" src="assets/busino/top_bar.png">
+    <div padding class="height-img" (tap)="openMenu()">
+        <img src="assets/busino/btn_menu.png">
     </div>
-    <div padding (tap)="onClickBusino()">BUSINO</div>
-    <div padding>
-        <ion-icon name="ios-star-outline" class=""></ion-icon>
+    <div padding class="busino-img" (tap)="onClickBusino()">
+        <img src="assets/busino/image_logo.png">
+    </div>
+    <div padding class="height-img">
+        <img src="assets/busino/btn_favourite.png">
+        <!-- <ion-icon name="ios-star-outline" class=""></ion-icon> -->
     </div>
 </div>

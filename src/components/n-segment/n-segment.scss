@@ -1,11 +1,19 @@
 n-segment {
+    .container {
+        // background-color: white;
+    }
     .segment-container {}
     .segment-item {
         width: 100%;
+        border-bottom: 1px solid;
+        .img-container {
+            width: 1em;
+            margin-right: 6px;
+        }
     }
     .segment-selected {
-        font-weight: bold;
-        border-bottom: 3px solid;
+        // font-weight: bold;
+        border-bottom: 3px solid !important;
     }
     .border-right {
         border-right: 1px solid;
