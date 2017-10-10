@@ -42,7 +42,7 @@ export class BusinoBusstopDetailPage {
 
   onClickFollowBus() {
     console.log("onClickFollowBus");
-    this.navCtrl.push("BusinoFollowBusPage")
+    this.navCtrl.push("BusinoFollowBusPage", {station: this.mStation})
   }
 
   onClickSaveStation() {

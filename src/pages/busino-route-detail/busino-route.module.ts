@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { BusinoFollowBusPage } from './busino-follow-bus';
+import { BusinoRoutePage } from './busino-route';
 
 import { ComponentsModule } from '../../components/components.module';
 
 @NgModule({
   declarations: [
-    BusinoFollowBusPage,
+    BusinoRoutePage,
   ],
   imports: [
     ComponentsModule,
-    IonicPageModule.forChild(BusinoFollowBusPage),
+    IonicPageModule.forChild(BusinoRoutePage),
   ],
 })
-export class BusinoFollowBusPageModule {}
+export class BusinoRoutePageModule {}

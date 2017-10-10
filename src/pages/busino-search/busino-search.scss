@@ -67,6 +67,9 @@ page-busino-search {
         margin-left: 16px;
         border-bottom: 1px solid #dedede;
     }
+    .item-text:active {
+        background-color: #eae9e9;
+    }
     .item-content-detail {
         // font-size: smaller;
     }

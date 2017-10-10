@@ -12,17 +12,21 @@ export class NHeaderSegmentComponent {
   @Input("root") root: string = '';
   @Input("bgcolor") bgcolor: string = '';
   @Input("color") color: string = '';
+  @Input("titleUrl") titleUrl: string = '';
+  @Input("currentSegment") currentSegment: number = 0;
 
   @Output() segmentIndex = new EventEmitter<number>();
-
-  currentSegment: number = 0;
 
   constructor(public mNavController: NavController) {
   }
 
   onClickSegment(index) {
-    this.currentSegment = index;
+    this.setCurrentSegment(index);
     this.segmentIndex.emit(index);
+  }
+
+  setCurrentSegment(index){
+    this.currentSegment = index;
   }
 
   onClickClose() {

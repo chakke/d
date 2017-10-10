@@ -37,5 +37,10 @@ page-busino-busstop-detail {
     .text-container {
         padding-left: 0 !important;
         border-bottom: 1px solid lightgrey;
+        text-align: left;
+        background: transparent;
+    }
+    .text-container:active {
+        background-color: #eae9e9;
     }
 }

@@ -116,6 +116,10 @@ export class BusinoModule {
     return this.mBusData.getRoutes();
   }
 
+  getRouteByCode(code: string) {
+    return this.mBusData.getRouteByCode(code);
+  }
+
   getBusStation() {
     return this.mBusData.getStations();
   }

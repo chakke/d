@@ -1,10 +1,13 @@
 <div class="container" [style.background-color]="bgcolor" [style.color]="color">
-    <div class="a1-width-100 a3-container title-container">
-        <div padding (tap)="onClickClose()">
+    <div class="a1-width-100 a3-container a3-items-center title-container">
+        <div class="img-item" (tap)="onClickClose()">
             <ion-icon name="ios-arrow-back-outline"></ion-icon>
         </div>
-        <div padding>
+        <div class="a3-flex-1">
             <span>{{title}}</span>
+        </div>
+        <div class="img-item">
+            <img [src]="titleUrl">
         </div>
     </div>
     <div class="a1-width-100 a3-container segment-container">

@@ -1,4 +1,4 @@
-import { LatLng } from '@ionic-native/google-maps';
+import { LatLng, Marker } from '@ionic-native/google-maps';
 import { Utils } from '../../app-utils';
 
 export class Station {
@@ -9,6 +9,7 @@ export class Station {
     fleetOver: string = "";
     routes: Array<string> = [];
     name: string = "";
+    marker: Marker;
     search: string = "";
 
     constructor() {
@@ -22,6 +23,7 @@ export class Station {
         this.routes = [];
         this.name = "";
         this.search = "";
+        this.marker = null;
     }
 
     onResponse(data) {
@@ -42,6 +44,14 @@ export class Station {
 
     getID() {
         return this.id;
+    }
+
+    setMarker(marker: Marker){
+        this.marker = marker;
+    }
+
+    getMarker(){
+        return this.marker;
     }
 
     onSetUpSearchData(){

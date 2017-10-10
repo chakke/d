@@ -70,8 +70,7 @@ export class BusinoSearchPage {
     // this.initMap();
     // this.loadMap();
   }
-  ionViewWillLeave(){
-    this.map.remove();
+  ionViewDidLeave() {
   }
 
   loadMap() {
@@ -248,11 +247,12 @@ export class BusinoSearchPage {
   currentMarker: Marker;
   isAddingMarker: boolean = false;
   onClickStation(station: Station) {
+    console.log(station);
+    console.log(!this.isAddingMarker);
+
     if (!this.isAddingMarker) {
 
       this.isAddingMarker = true;
-      console.log(station);
-      console.log(this.currentStation);
 
       this.rmCurrentStation();
 
@@ -263,12 +263,15 @@ export class BusinoSearchPage {
 
       if (this.map) {
         this.map.addMarker(mMarkerOptions).then((marker: Marker) => {
-          this.animateCamera(station.location)
+          this.animateCamera(station.location);
+          setTimeout(() => {
+            this.isAddingMarker = false;
+          }, 400)
           marker.showInfoWindow();
 
           marker.on(GoogleMapsEvent.INFO_CLICK).subscribe((latLng: LatLng) => {
             console.log("GoogleMapsEvent.INFO_CLICK");
-            this.onViewStationDetail(station);
+            this.viewStationDetail(station);
             marker.hideInfoWindow();
           });
           marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe((latLng: LatLng) => {
@@ -278,9 +281,11 @@ export class BusinoSearchPage {
 
           this.currentStation = station;
           this.currentMarker = marker;
-          this.isAddingMarker = false;
         });
       }
+    }
+    else {
+      this.viewStationDetail(station);
     }
   }
 
@@ -291,7 +296,7 @@ export class BusinoSearchPage {
     this.currentMarker.setPosition(station.location);
     this.currentMarker.on(GoogleMapsEvent.INFO_CLICK).subscribe((latLng: LatLng) => {
       console.log("GoogleMapsEvent.INFO_CLICK");
-      this.onViewStationDetail(station);
+      this.viewStationDetail(station);
       this.currentMarker.hideInfoWindow();
     });
     this.currentMarker.on(GoogleMapsEvent.MARKER_CLICK).subscribe((latLng: LatLng) => {
@@ -308,7 +313,7 @@ export class BusinoSearchPage {
     }
   }
 
-  onViewStationDetail(station: Station) {
+  viewStationDetail(station: Station) {
     this.navCtrl.push("BusinoBusstopDetailPage", { station: station });
   }
 }

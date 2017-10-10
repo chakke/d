@@ -1,0 +1,103 @@
+<ion-content no-bounce>
+    <div class="container a3-container a3-column">
+        <div #map id="map" class="a3-flex-1"></div>
+        <!-- <div id="map1"></div> -->
+        <div id="another-div" class="a3-container a3-column">
+            <div>
+                <div id="route-name-container" class="a3-container a3-items-center">
+                    <div class="a3-container a3-items-center a3-flex-1" (tap)="onClickButton()">
+                        <div class="arrow-container a3-container a3-items-center a3-justify-center">
+                            <ion-icon name="{{isOpen?'md-arrow-down':'md-arrow-up'}}"></ion-icon>
+                        </div>
+                        <div class="name-container">
+                            <span>{{mRoute.mName}}</span>
+                        </div>
+                    </div>
+                    <div class="direction-container a3-container a3-items-center a3-justify-center">
+                        <div class="direction" (tap)="changeDirection()">{{isGo?'Chiều đi':'Chiều về'}}</div>
+                    </div>
+                </div>
+                <div class="segment-container">
+                    <n-segment [segments]="segments" [rightColor]="border" [bottomColor]="border" (segmentIndex)="onChangeView($event)"></n-segment>
+                </div>
+            </div>
+            <div class="a3-flex-1" style="overflow: hidden">
+                <ion-slides>
+                    <ion-slide>
+                        <div id="routes-container" class="a1-fill-parent" style="overflow: auto">
+                            <div class="route-item a3-container" (tap)="onClickStation(startStation, $event, titleS)">
+                                <div class="line-container a1-relative">
+                                    <img class="bus-img a1-absolute" src="assets/bus-round.png">
+                                    <div class="line half-line a1-absolute" style="bottom: 0"></div>
+                                </div>
+                                <div class="route-name a3-container a3-items-center a3-flex-1">
+                                    <span #titleS id="titleS">{{startStation.name}}</span>
+                                </div>
+                            </div>
+                            <div class="route-item a3-container" *ngFor="let station of betweenStations" (tap)="onClickStation(station, $event, title, icon)">
+                                <div class="line-container a1-relative">
+                                    <img class="iconB bus-img a1-absolute" #icon src="assets/circle-outline.png">
+                                    <div class="line full-line a1-absolute" style="bottom: 0"></div>
+                                </div>
+                                <div class="route-name a3-container a3-items-center a3-flex-1">
+                                    <span #title class="titleB">{{station.name}}</span>
+                                </div>
+                            </div>
+                            <div class="route-item a3-container" (tap)="onClickStation(endStation, $event, titleE)">
+                                <div class="line-container a1-relative">
+                                    <img class="bus-img a1-absolute" src="assets/bus-round.png">
+                                    <div class="line half-line a1-absolute"></div>
+                                </div>
+                                <div class="route-name a3-container a3-items-center a3-flex-1">
+                                    <span #titleE id="titleE">{{endStation.name}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </ion-slide>
+                    <ion-slide>
+                        <div padding class="a1-fill-parent a1-text-left" style="overflow: auto">
+                            <div class="info-item a1-margin-bottom">
+                                <div><b>Đơn vị chủ quản</b></div>
+                                <div>{{mRoute.mEnterprise}}</div>
+                            </div>
+                            <div class="info-item a1-margin-bottom">
+                                <div><b>Số lượng xe</b></div>
+                                <div>{{mRoute.mBusCount}}</div>
+                            </div>
+                            <div class="info-item a1-margin-bottom">
+                                <div><b>Tần suất</b></div>
+                                <div>{{mRoute.mFrequency}}</div>
+                            </div>
+                            <div class="info-item a1-margin-bottom">
+                                <div><b>Giá vé</b></div>
+                                <div>{{mRoute.mCost}}</div>
+                            </div>
+                            <div class="info-item a1-margin-bottom">
+                                <div><b>Chiều đi</b></div>
+                                <div>{{mRoute.mGoWaypoint.route_detail}}</div>
+                            </div>
+                            <div class="info-item">
+                                <div><b>Chiều về</b></div>
+                                <div>{{mRoute.mReturnWaypoint.route_detail}}</div>
+                            </div>
+                        </div>
+                    </ion-slide>
+                </ion-slides>
+            </div>
+        </div>
+    </div>
+</ion-content>
+
+<div class="header-container" [style.background-color]="bgcolor" [style.color]="color">
+    <div class="title-container a1-width-100 a3-container a3-justify-between">
+        <div padding (tap)="onClickClose()">
+            <ion-icon name="ios-arrow-back-outline"></ion-icon>
+        </div>
+        <div padding (tap)="onClickMarker(this.mRoute.mGoWaypoint.stations[3])">
+            <span>{{title}}</span>
+        </div>
+        <div padding>
+            <!-- <ion-icon name="ios-pin-outline"></ion-icon> -->
+        </div>
+    </div>
+</div>

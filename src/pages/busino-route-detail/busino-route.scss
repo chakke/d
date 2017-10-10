@@ -1,0 +1,114 @@
+page-busino-route {
+    $header-height: 50px;
+    ion-content {
+        .scroll-content {
+            padding-top: $header-height !important;
+        }
+    }
+    .header-container {
+        position: absolute;
+        z-index: 100;
+        width: 100%;
+        .title-container {
+            font-weight: bold;
+            height: 50px;
+            font-size: 1.2em;
+        }
+    }
+    .container {
+        width: 100%;
+        height: 100%;
+    }
+    #map {
+        // height: 100%;
+        width: 100%;
+        transition: all 0.5s;
+        background-color: black;
+        // position: absolute;
+        // top: 0;
+        z-index: 0;
+    }
+    #another-div {
+        height: 50%;
+        width: 100%;
+        transition: all 0.5s;
+        // background-color: pink;
+        overflow: auto;
+        z-index: 10;
+        // position: absolute;
+        // bottom: 0;
+        #route-name-container {
+            // height: 40px;
+            padding: 6px;
+            .arrow-container {
+                min-width: 30px;
+                height: 30px;
+                background-color: lightgrey;
+                border-radius: 50%;
+                color: orange;
+            }
+            .name-container {
+                padding-left: 4px;
+            }
+            .direction-container {
+                padding: 0 4px;
+                .direction {
+                    white-space: nowrap;
+                    padding: 4px;
+                    background-color: lightgrey;
+                    border-radius: 4px;
+                    color: orange;
+                }
+            }
+        }
+        .segment-container {
+            height: 30px;
+            border-top: 1px solid #FDC21E;
+            border-bottom: 1px solid #FDC21E;
+        }
+        ion-slides {
+            ion-slide {
+                font-size: 1em;
+                .slide-zoom {
+                    height: 100%;
+                }
+            }
+        }
+        .route-item {
+            height: 3em;
+            .line-container {
+                width: 10%;
+                height: 100%;
+                .bus-img {
+                    width: 1.5em;
+                    top: calc(50% - 0.75em);
+                    left: calc(50% - 0.75em);
+                    z-index: 10;
+                }
+                .line {
+                    width: 3px;
+                    height: 50%;
+                    background-color: #CC3300;
+                    left: calc(50% - 1px);
+                }
+                .half-line {
+                    height: 50%;
+                }
+                .full-line {
+                    height: 100%;
+                }
+            }
+            .route-name {
+                text-align: left;
+                border-bottom: 1px solid lightgrey;
+                padding-left: 6px;
+                #titleS {
+                    font-weight: bold;
+                }
+            }
+        }
+        .info-item {
+            line-height: 1.5em;
+        }
+    }
+}

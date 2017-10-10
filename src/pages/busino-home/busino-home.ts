@@ -1,12 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
 
-/**
- * Generated class for the BusinoHomePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { BusinoModule } from '../../providers/busino/busino';
 
 @IonicPage()
 @Component({
@@ -19,6 +14,7 @@ export class BusinoHomePage {
   rightColor = "lightgrey";
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
+    public mBusinoModule: BusinoModule,
     public mMenuController: MenuController) {
 
   }
@@ -34,5 +30,10 @@ export class BusinoHomePage {
   onChangeView(number){
     console.log("from page: " + number);
 
+  }
+
+  onClickBusino(){
+    
+    this.navCtrl.push("BusinoRoutePage", {route: this.mBusinoModule.getRouteByCode("06D")})
   }
 }
