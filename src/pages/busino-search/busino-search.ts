@@ -42,7 +42,7 @@ export class BusinoSearchPage {
   mSearchData: Array<Route> = [];
   currentBrData: Array<Route> = []; // busroute data
   mBusStopData: Array<Station> = [];
-  currentBsData: Array<Station> = []; // busroute data
+  currentBsData: Array<Station> = []; // busstop data
   virtualClassBr = "";
   virtualClassBs = "virtual-hide";
 
@@ -67,7 +67,7 @@ export class BusinoSearchPage {
   }
 
   ionViewDidEnter() {
-    // this.initMap();
+    this.initMap();
     // this.loadMap();
   }
   ionViewDidLeave() {

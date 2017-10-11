@@ -37,7 +37,7 @@ export class BusinoLoadingPage {
   }
 
   onPlatformReady() {
-    this.mStatusBar.backgroundColorByHexString("#EAB31B");
+    this.mStatusBar.backgroundColorByHexString("#46ACEE");
     this.mStatusBar.overlaysWebView(false);
     this.doCheckNetwork().then(
       data => { this.onHasNetwork(); },

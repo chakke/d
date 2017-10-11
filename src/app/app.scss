@@ -664,12 +664,20 @@ $search-modal-height: calc(100vh - 72px);
     // font-weight: bold;
 }
 
-.overflow-hidden {
+.n-overflow {
+    overflow: auto;
+}
+
+.n-overflow-hidden {
     overflow: hidden;
 }
 
 .no-padding-top {
     padding-top: 0 !important;
+}
+
+.n-bold-text {
+    font-weight: bold;
 }
 
 // =============================== End Busino Apps ==========================

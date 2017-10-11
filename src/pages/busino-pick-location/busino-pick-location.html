@@ -1,5 +1,78 @@
-<ion-content padding>
-
+<ion-content id="main-content" no-bounce>
+    <div *ngIf="currentView==VIEW_GOOGLE" class="search-content a1-fill-parent n-overflow">
+        <div padding>
+            <span class="n-bold-text">Các điểm mới đi</span>
+        </div>
+        <div class="item-container a1-width-100 a1-padding-bottom">
+            <div class="search-item a3-container a3-items-center" *ngFor="let p of [1,2,3,33,3,3,3,3]">
+                <div padding class="icon-container">
+                    <img src="assets/busino/icon_history.png">
+                </div>
+                <div class="a3-flex-1">
+                    <div class="a1-width-100">
+                        <span>Ngõ 27 Đại Cồ Việt, Q. Hai Bà Trưngggg ggggggggggggg </span>
+                    </div>
+                    <div class="extra-info a1-width-100">Vài giây trước</div>
+                </div>
+            </div>
+        </div>
+        <div padding>
+            <span class="n-bold-text">Các điểm đã yêu thích</span>
+        </div>
+        <div>
+            <div class="item-container a1-width-100 a1-padding-bottom">
+                <div class="search-item a3-container a3-items-center" *ngFor="let p of [1,2]">
+                    <div padding class="icon-container">
+                        <img src="assets/busino/icon_favourite.png">
+                    </div>
+                    <div class="a3-flex-1">
+                        <div class="a1-width-100">
+                            <span>Ngõ 27 Đại Cồ Việt, Q. Hai Bà Trưng </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div *ngIf="currentView==VIEW_MAP" #map id="map"> -->
+    <div [hidden]="currentView!=VIEW_MAP" #map id="map-pick-location">
+        <div padding class="a1-width-100">
+            <div padding class="address-container a3-container a3-items-center" style="background-color: white">
+                <div class="img-container">
+                    <img src="assets/busino/icon_arrival.png">
+                </div>
+                <div class="a3-flex-1">{{targetAddress.length>0?targetAddress:requestingAddress}}</div>
+            </div>
+        </div>
+        <div class="map-footer a3-container">
+            <div class="a3-flex-1" style="padding: 8px">
+                <div class="accept-button a3-container a3-items-center a3-justify-center">
+                    <span>XÁC NHẬN ĐỊA CHỈ</span>
+                </div>
+            </div>
+            <div class="mylocation">
+                <img src="assets/busino/btn_mylocation.png">
+            </div>
+        </div>
+    </div>
+    <ion-list [ngClass]="virtualClassBs" approxItemHeight="30px" [virtualScroll]="currentBsData">
+        <ion-item *virtualItem="let item" class="a3-container" (tap)="onClickStation(item)">
+            <div>
+                <img src="assets/busino/icon_busstop_small.png">
+            </div>
+            <div class="a3-container a3-wrap a3-items-center item-text">
+                <div class="item-content-detail a3-container a1-width-100">
+                    <div class="a1-text-left bs-name">{{item.name}}</div>
+                </div>
+                <div class="item-content-detail a3-container a1-width-100">
+                    <div class="a1-text-left bs-fleetover">{{item.fleetOver}}</div>
+                </div>
+            </div>
+        </ion-item>
+    </ion-list>
 </ion-content>
 
-<n-header-segment [bgimg]="bgimg" [title]="title" [segments]="segments" [root]="root" [color]="color" [btmColor]="btmColor" [rgtColor]="rgtColor" (segmentIndex)="onChangeView($event)"></n-header-segment>
+<n-header-segment [bgimg]="bgimg" [title]="title" [segments]="segments" [root]="root" [bgColor]="bgColor" [color]="color" [btmColor]="btmColor" [rgtColor]="rgtColor" (segmentIndex)="onChangeView($event)"></n-header-segment>
+<div *ngIf="currentView!=VIEW_MAP" class="search-box-container a3-container a3-items-center a3-justify-center a1-absolute">
+    <ion-searchbar #mSearchBar id="a-searchbar" [(ngModel)]="mSearchInput" [showCancelButton]="mShouldShowCancel" (ionInput)="onSearchInput()" (ionCancel)="onSearchCancel()" [placeholder]="mPlaceholder" (tap)="scrollToTop()"> </ion-searchbar>
+</div>

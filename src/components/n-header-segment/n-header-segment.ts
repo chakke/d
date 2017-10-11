@@ -12,7 +12,7 @@ export class NHeaderSegmentComponent {
   @Input("title") title: string = 'this is title';
   @Input("segments") segments: Array<string> = [];
   @Input("root") root: string = '';
-  @Input("bgcolor") bgcolor: string = '';
+  @Input("bgColor") bgColor: string = '';
   @Input("btmColor") btmColor = '';
   @Input("rgtColor") rgtColor = '';
   @Input("bgimg") bgimg: string = '';
