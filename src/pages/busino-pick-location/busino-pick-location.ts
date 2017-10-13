@@ -40,6 +40,11 @@ export class BusinoPickLocationPage {
   mShouldShowCancel: boolean = false;
   isSearching: boolean = false;
 
+  // google place api
+  geocoder = new google.maps.Geocoder;
+  autocompleteService = new google.maps.places.AutocompleteService();
+  places: any = [];
+
   mBusStopData: Array<Station> = [];
   currentBsData: Array<Station> = []; // busstop data
 
@@ -81,6 +86,7 @@ export class BusinoPickLocationPage {
     console.log('ionViewDidLoad BusinoPickLocationPage');
     // this.loadMap();
     // this.initMap();
+
   }
 
   initMap() {
@@ -214,6 +220,7 @@ export class BusinoPickLocationPage {
 
     let query: string = this.mSearchInput.toLocaleLowerCase().trim();
 
+
     if (Utils.kiemTraToanDauCach(query)) {
       if (!query) {
         this.isSearching = false;
@@ -228,7 +235,8 @@ export class BusinoPickLocationPage {
           return (elm.search.indexOf(query) !== -1) || (elm.search.indexOf(Utils.bodauTiengViet(query)) !== -1);
         })
       }
-      else {
+      else if (this.currentView == this.VIEW_GOOGLE) {
+        this.searchPlace(query);
       }
     }
     else {
@@ -243,10 +251,56 @@ export class BusinoPickLocationPage {
   recoverRawData() {
     // this.currentBrData = this.mSearchData;
     this.currentBsData = this.mBusStopData;
+    this.places = [];
   }
 
 
   onClickStation(station: Station) {
+
+  }
+
+  searchPlace(query) {
+    // this.saveDisabled = true;
+
+    if (query.length > 0) {//} && !this.searchDisabled) {
+
+      var hanoi = new google.maps.LatLng(21.027764, 105.834160);
+      let config = {
+        types: ['geocode'],
+        location: hanoi,
+        radius: 50000,
+        // strictBounds: true,
+        componentRestrictions: { country: "vn" },
+        input: query
+      }
+
+      this.autocompleteService.getPlacePredictions(config, (predictions, status) => {
+        console.log(predictions);
+
+        if (status == google.maps.places.PlacesServiceStatus.OK && predictions) {
+
+          this.places = [];
+
+          predictions.forEach((prediction) => {
+            let length = prediction.terms.length;
+            if (length >= 3){
+              // && prediction.terms[length - 1].value == 'Vietnam'
+              // && prediction.terms[length - 2].value == 'Hanoi') {
+              this.places.push(prediction);
+            }
+          });
+        }
+
+      });
+
+    } else {
+      this.places = [];
+    }
+
+  }
+
+  selectPlace(place) {
+    console.log(place);
 
   }
 
