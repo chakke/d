@@ -120,8 +120,12 @@ export class BusinoModule {
     return this.mBusData.getRouteByCode(code);
   }
 
-  getBusStation() {
+  getBusStations() {
     return this.mBusData.getStations();
+  }
+
+  getStationsAround(location: LatLng){
+    return this.mBusData.getStationsAround(location);
   }
 
   onLoadedBusData(data) {
@@ -144,7 +148,7 @@ export class BusinoModule {
 
 
   testRequest() {
-    this.mBusinoHttpService.testRequest();
+      this.mBusinoHttpService.testRequest();
   }
 
 
@@ -160,6 +164,10 @@ export class BusinoModule {
       }, (rej) => {
         this.loadConfig();
       });
+    }, (error)=>{
+      console.log("RequestAppData Error", error);
+      this.loadConfig();
+      
     });
   }
 
@@ -194,17 +202,7 @@ export class BusinoModule {
   requestAppData(url: string) {
     return new Promise((resolve, reject) => {
       this.mHttpService.getHttp().get(url).subscribe((data) => {
-
-
-
-        // this.mAppData.onResponseData(data.json()).then((res) => {
-        //     console.log(res);
-
-        //     // this.onResponseSearchData(this.mAppData.data);
         resolve(data.json());
-        // }, (rej) => {
-        //     reject();
-        // });
       }, (error) => {
         console.log(error);
         reject();
@@ -216,59 +214,6 @@ export class BusinoModule {
     return this.mAppDataController.getAppData();
   }
 
-  getSimuBuses() {
-    // return this.mSimuBusController.getSimuBuses();
-  }
-
-  getSimuBusesByRoute(code: string) {
-    // return this.mSimuBusController.getSimuBusByRoute(code);
-  }
-
-  getSimuBusController() {
-    // return this.mSimuBusController;
-  }
-
-  getBusStopController() {
-    // return this.mBusStopController;
-  }
-
-  getSearchData() {
-    // return this.mAppDataController.mSearchData;
-  }
-
-  getSearchHistory() {
-    // return this.mAppDataController.getSearchHistory();
-  }
-
-  setSearchHistory(searchHistory: Array<string>) {
-    // this.mAppDataController.setSearchHistory(searchHistory);
-  }
-
-  getBotSearchData() {
-    // return this.mSimuBusController.getBotSearchData();
-  }
-
-
-  // setCurrentAddress(currentAddress: string) {
-  //   this.currentAddress = currentAddress;
-  // }
-
-  // getCurrentAddress() {
-  //   return this.currentAddress;
-  // }
-
-
-  getBusStopData() {
-    // return this.mBusStopController.getBusStopData();
-  }
-
-  getSearchPathController() {
-    // return this.mSearchPathController;
-  }
-
-  getResultPath() {
-    // return this.mSearchPathController.getResultPath();
-  }
 
   requestAddress(data: LatLng) {
     return new Promise((resolve, reject) => {

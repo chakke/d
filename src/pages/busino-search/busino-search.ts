@@ -62,7 +62,7 @@ export class BusinoSearchPage {
 
     this.mSearchData = Array.from(this.mBusinoModule.getBusRoutes().values());
     this.currentBrData = this.mSearchData;
-    this.mBusStopData = Array.from(this.mBusinoModule.getBusStation().values());
+    this.mBusStopData = Array.from(this.mBusinoModule.getBusStations().values());
     this.currentBsData = this.mBusStopData;
   }
 

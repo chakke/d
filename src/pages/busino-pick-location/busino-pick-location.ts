@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 
 import {
   GoogleMaps, GoogleMapOptions, GoogleMapsEvent, GoogleMap,
@@ -28,11 +28,12 @@ export class BusinoPickLocationPage {
   title: string = 'Chọn điểm đi';
   segments: Array<NSegmentItem> = [{ text: "Google", selectedImg: "", unSelectedImg: "" }, { text: "Bản đồ", selectedImg: "", unSelectedImg: "" }, { text: "Điểm dừng", selectedImg: "", unSelectedImg: "" }];
   root = "BusinoHomePage";
-  bgimg = "assets/busino/top_bar.png";
+  bgimg = "assets/busino/homepage/top_bar.png";
   bgColor = "white";
   color: string = 'white';
   btmColor = "#FAC132";
   rgtColor = "lightgrey";
+  popData: any;
 
   // searchbar contributes
   mSearchInput: string = "";
@@ -61,15 +62,29 @@ export class BusinoPickLocationPage {
   //------
 
   map: any;
-
+  callback: any;
   targetAddress = "";
+  targetLatLng: LatLng;
   requestingAddress = "Đang xác định...";
 
   constructor(public navCtrl: NavController,
+    private mViewController: ViewController,
     private googleMaps: GoogleMaps,
     private mBusinoModule: BusinoModule,
     public navParams: NavParams) {
+    this.callback = this.navParams.get('callback');
     this.type = navParams.data['type'];
+    if (navParams.data['detail']) {
+      this.targetAddress = navParams.data['detail'].place;
+      this.targetLatLng = navParams.data['detail'].latlng;
+    }
+
+    if(this.targetAddress){
+      console.log("this.targetAddressthis.targetAddressthis.targetAddress");
+      
+    }
+    
+
     if (this.type == this.FROM) {
       this.title = "Chọn điểm đi"
     }
@@ -77,7 +92,7 @@ export class BusinoPickLocationPage {
       this.title = "Chọn điểm đến"
     }
 
-    this.mBusStopData = Array.from(this.mBusinoModule.getBusStation().values());
+    this.mBusStopData = Array.from(this.mBusinoModule.getBusStations().values());
     this.currentBsData = this.mBusStopData;
 
   }
@@ -86,7 +101,6 @@ export class BusinoPickLocationPage {
     console.log('ionViewDidLoad BusinoPickLocationPage');
     // this.loadMap();
     // this.initMap();
-
   }
 
   initMap() {
@@ -111,57 +125,54 @@ export class BusinoPickLocationPage {
       this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
         console.log('Map is ready!');
 
-        let mapOptions: GoogleMapOptions = {
-          mapType: 'MAP_TYPE_NORMAL',
-          controls: {
-            compass: false,
-            myLocationButton: false,
-            indoorPicker: false,
-            mapToolbar: false
-          },
-          gestures: {
-            scroll: true,
-            tilt: false,
-            zoom: true,
-            rotate: false,
-          },
-          styles: [
-            {
-              featureType: "transit.station.bus",
-              stylers: [
-                {
-                  "visibility": "off"
-                }
-              ]
-            }
-          ],
-          camera: {
-            target: new LatLng(21.027764, 105.834160),
-            zoom: 15,
-            tilt: 0
-          },
-          preferences: {
-            zoom: {
-              minZoom: 10,
-              maxZoom: 16
-            },
-            building: false,
-          }
-        }
-        this.map.setOptions(mapOptions);
-
-        this.map.on("camera_move_end").subscribe((cameraPosition) => {
-          this.findAddress(cameraPosition[0].target);
-        })
-
         this.map.getMyLocation().then(data => {
-          this.animateCamera(data.latLng);
+          let mapOptions: GoogleMapOptions = {
+            mapType: 'MAP_TYPE_NORMAL',
+            controls: {
+              compass: false,
+              myLocationButton: false,
+              indoorPicker: false,
+              mapToolbar: false
+            },
+            gestures: {
+              scroll: true,
+              tilt: false,
+              zoom: true,
+              rotate: false,
+            },
+            styles: [
+              {
+                featureType: "transit.station.bus",
+                stylers: [
+                  {
+                    "visibility": "off"
+                  }
+                ]
+              }
+            ],
+            camera: {
+              target: this.targetAddress ? this.targetLatLng : data.latLng,
+              zoom: 15,
+              tilt: 0
+            },
+            preferences: {
+              zoom: {
+                minZoom: 10,
+                maxZoom: 16
+              },
+              building: false,
+            }
+          }
+          this.map.setOptions(mapOptions);
+          this.map.on("camera_move_end").subscribe((cameraPosition) => {
+            this.findAddress(cameraPosition[0].target);
+          })
         });
+
       });
     }
     catch (e) {
       console.log(e);
-
     }
   }
 
@@ -169,7 +180,7 @@ export class BusinoPickLocationPage {
     console.log("removeMap");
 
     if (this.map) {
-      this.map.remove();
+      // this.map.remove();
     }
   }
 
@@ -182,12 +193,41 @@ export class BusinoPickLocationPage {
     }
   }
 
+  moveCamera(location: LatLng) {
+    if (this.map) {
+      this.map.moveCamera({
+        target: location
+      })
+    }
+  }
+
+  onClickMyLocation() {
+    this.getMyLocation()
+  }
+
+  getMyLocation() {
+    if (this.map) {
+      this.map.getMyLocation().then(data => {
+        this.animateCamera(data.latLng);
+      });
+    }
+  }
+
   isRequestingAddr = false;
   findAddress(location: LatLng) {
     this.targetAddress = "";
+    this.targetLatLng = location;
     this.mBusinoModule.requestAddress(location).then(addr => {
       this.targetAddress = addr + "";
     });
+
+  }
+
+  confirmPlace() {
+    console.log("confirmPlace");
+    if (this.targetLatLng) {
+      this.sendData(this.packData(this.targetAddress, this.targetLatLng));
+    }
   }
 
   onChangeView(view) {
@@ -256,7 +296,7 @@ export class BusinoPickLocationPage {
 
 
   onClickStation(station: Station) {
-
+    this.sendData(this.packData(station.name, station.location));
   }
 
   searchPlace(query) {
@@ -283,7 +323,7 @@ export class BusinoPickLocationPage {
 
           predictions.forEach((prediction) => {
             let length = prediction.terms.length;
-            if (length >= 3){
+            if (length >= 3) {
               // && prediction.terms[length - 1].value == 'Vietnam'
               // && prediction.terms[length - 2].value == 'Hanoi') {
               this.places.push(prediction);
@@ -300,8 +340,28 @@ export class BusinoPickLocationPage {
   }
 
   selectPlace(place) {
-    console.log(place);
 
+    this.popData = place;
+    let geocoder = new google.maps.Geocoder;
+
+    geocoder.geocode({ 'placeId': place.place_id }, (results, status) => {
+      this.sendData(this.packData(place.description, new LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng())));
+    })
+
+
+  }
+
+  packData(place: string, latLng: LatLng) {
+    return {
+      type: this.type,
+      place: place,
+      latlng: latLng
+    }
+  }
+
+  // send data back
+  sendData(data) {
+    this.callback(data).then(() => { this.navCtrl.pop({animate: false}) });
   }
 
   requestObject: any;
@@ -324,4 +384,5 @@ export class BusinoPickLocationPage {
       }
     })
   }
+
 }

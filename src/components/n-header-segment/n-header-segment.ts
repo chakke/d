@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { NavController } from 'ionic-angular';
+import { NavController, ViewController } from 'ionic-angular';
 
 import { NSegmentItem } from '../n-segment/n-segment';
 
@@ -27,7 +27,7 @@ export class NHeaderSegmentComponent {
   // @Input("bottomColor") btmColor: string = '';
   // @Input("rightColor") rgtColor: string = '';
 
-  constructor(public mNavController: NavController) {
+  constructor(public mNavController: NavController, public mViewController: ViewController) {
   }
 
   onClickSegment(index) {
@@ -42,6 +42,7 @@ export class NHeaderSegmentComponent {
   onClickClose() {
     if (this.mNavController.canGoBack()) {
       this.mNavController.pop({ animate: false });
+      console.log("canGoBack");
     }
     else {
       this.mNavController.setRoot(this.root, "", { animate: false });

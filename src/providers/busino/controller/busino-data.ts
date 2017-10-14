@@ -1,5 +1,10 @@
 import { Route } from '../classes/route';
 import { Station } from '../classes/station';
+
+import { LatLng } from '@ionic-native/google-maps';
+
+import { Utils } from '../../app-utils';
+
 export class BusinoData {
     mRoutes: Map<string, Route> = new Map<string, Route>();
     mStations: Map<number, Station> = new Map<number, Station>();
@@ -8,11 +13,11 @@ export class BusinoData {
 
     }
 
-    getRoutes(){
+    getRoutes() {
         return this.mRoutes;
     }
 
-    getStations(){
+    getStations() {
         return this.mStations;
     }
 
@@ -26,7 +31,18 @@ export class BusinoData {
         return null;
     }
 
-    onResponse(data) {        
+    RADIUS = 0.5; // km
+    getStationsAround(location: LatLng) {        
+        let stations: Array<Station> = [];
+        this.mStations.forEach(station => {            
+            if (this.RADIUS >= Utils.calculateDistance(location.lat, location.lng, station.location.lat, station.location.lng)) {
+                stations.push(station);
+            }
+        });
+        return stations;        
+    }
+
+    onResponse(data) {
         this.mRoutes.clear();
         this.mStations.clear();
         for (let routeData of data) {

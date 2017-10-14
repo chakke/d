@@ -6,7 +6,7 @@
         <div class="item-container a1-width-100 a1-padding-bottom">
             <div class="search-item a3-container a3-items-center" *ngFor="let p of [1,2,3,33,3,3,3,3]">
                 <div padding class="icon-container">
-                    <img src="assets/busino/icon_history.png">
+                    <img src="assets/busino/homepage/icon_history.png">
                 </div>
                 <div class="a3-flex-1">
                     <div class="a1-width-100">
@@ -23,7 +23,7 @@
             <div class="item-container a1-width-100 a1-padding-bottom">
                 <div class="search-item a3-container a3-items-center" *ngFor="let p of [1,2]">
                     <div padding class="icon-container">
-                        <img src="assets/busino/icon_favourite.png">
+                        <img src="assets/busino/homepage/icon_favourite.png">
                     </div>
                     <div class="a3-flex-1">
                         <div class="a1-width-100">
@@ -39,29 +39,29 @@
         <div padding class="a1-width-100">
             <div padding class="address-container a3-container a3-items-center" style="background-color: white">
                 <div class="img-container">
-                    <img src="assets/busino/icon_arrival.png">
+                    <img src="assets/busino/homepage/icon_arrival.png">
                 </div>
                 <div class="a3-flex-1">{{targetAddress.length>0?targetAddress:requestingAddress}}</div>
             </div>
         </div>
         <div class="map-center-icon">
-            <img src="assets/busino/marker_arrival.png">
+            <img src="assets/busino/homepage/marker_arrival.png">
         </div>
         <div class="map-footer a3-container">
             <div class="a3-flex-1" style="padding: 8px">
-                <div class="accept-button a3-container a3-items-center a3-justify-center">
+                <div class="accept-button a3-container a3-items-center a3-justify-center" (tap)="confirmPlace()">
                     <span>XÁC NHẬN ĐỊA CHỈ</span>
                 </div>
             </div>
-            <div class="mylocation">
-                <img src="assets/busino/btn_mylocation.png">
+            <div class="mylocation" (tap)="onClickMyLocation()">
+                <img src="assets/busino/homepage/btn_mylocation.png">
             </div>
         </div>
     </div>
     <ion-list [ngClass]="virtualClassBs" approxItemHeight="30px" [virtualScroll]="currentBsData">
         <ion-item *virtualItem="let item" class="a3-container" (tap)="onClickStation(item)">
             <div>
-                <img src="assets/busino/icon_busstop_small.png">
+                <img src="assets/busino/homepage/icon_busstop_small.png">
             </div>
             <div class="a3-container a3-wrap a3-items-center item-text">
                 <div class="item-content-detail a3-container a1-width-100">
@@ -82,7 +82,7 @@
     </div>
     <div class="place-container">
         <ion-list>
-            <ion-item *ngFor="let place of places" (touchstart)="selectPlace(place)">{{place.description}}</ion-item>
+            <ion-item *ngFor="let place of places" (tap)="selectPlace(place)">{{place.description}}</ion-item>
         </ion-list>
     </div>
 </div>

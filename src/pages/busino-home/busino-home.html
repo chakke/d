@@ -11,26 +11,25 @@
                         <div class="find-path-container a3-container a1-width-100">
                             <div class="a3-container a3-column a3-justify-center">
                                 <div class="img-container a3-container a3-justify-center">
-                                    <img class="simg" src="assets/busino/marker_departure.png">
+                                    <img class="simg" src="assets/busino/homepage/marker_departure.png">
                                 </div>
                                 <div class="img-container a3-container a3-justify-center" style="margin: 4px 0">
-                                    <img class="simg" src="assets/busino/4dots.png">
+                                    <img class="simg" src="assets/busino/homepage/4dots.png">
                                 </div>
                                 <div class="img-container a3-container a3-justify-center">
-                                    <img class="simg" src="assets/busino/icon_arrival.png">
+                                    <img class="simg" src="assets/busino/homepage/icon_arrival.png">
                                 </div>
                             </div>
-                            <div class="a3-flex-1" style="padding: 1px">
-                                <div class="input-container" style="border-bottom: 1px solid lightgrey" (tap)="onClickFindPath(FROM)">
-                                    <ion-input placeholder="Chọn điểm đi"></ion-input>
-                                    <!-- <input class="a1-fill-parent" type="text" value="Chọn điểm đi"> -->
+                            <div class="a3-flex-1" style="padding: 1px; overflow: hidden">
+                                <div class="input-container a3-container a3-items-center" style="border-bottom: 1px solid lightgrey" (tap)="onClickFindPath(FROM)">
+                                    <span class="a1-text-ellipsis">{{from.place?from.place:'Chọn điểm đi'}}</span>
                                 </div>
-                                <div class="input-container" (tap)="onClickFindPath(TO)">
-                                    <ion-input placeholder="Chọn điểm đến"></ion-input>
+                                <div class="input-container a3-container a3-items-center" (tap)="onClickFindPath(TO)">
+                                    <span class="a1-text-ellipsis">{{to.place?to.place:'Chọn điểm đến'}}</span>
                                 </div>
                             </div>
-                            <div padding class="img-container a3-container a3-items-center a3-justify-center">
-                                <img style="width: 1.2em" src="assets/busino/btn_switch.png">
+                            <div padding class="img-container a3-container a3-items-center a3-justify-center" (tap)="onClickSwitch()">
+                                <img style="width: 1.2em" src="assets/busino/homepage/btn_switch.png">
                             </div>
                         </div>
                         <div class="buttons-container a1-width-100 a3-container a3-items-center a3-justify-center">
@@ -41,21 +40,21 @@
                 </div>
             </div>
         </div>
-        <div class="mylocation">
-            <img src="assets/busino/btn_mylocation.png">
+        <div class="mylocation" (tap)="onClickMyLocation()">
+            <img src="assets/busino/homepage/btn_mylocation.png">
         </div>
     </div>
 </ion-content>
 <div class="header a3-container a3-justify-between">
-    <img class="a1-fill-parent a1-absolute" style="z-index: -1" src="assets/busino/top_bar.png">
+    <img class="a1-fill-parent a1-absolute" style="z-index: -1" src="assets/busino/homepage/top_bar.png">
     <div padding class="height-img" (tap)="openMenu()">
-        <img src="assets/busino/btn_menu.png">
+        <img src="assets/busino/homepage/btn_menu.png">
     </div>
     <div padding class="busino-img" (tap)="onClickBusino()">
-        <img src="assets/busino/image_logo.png">
+        <img src="assets/busino/homepage/image_logo.png">
     </div>
     <div padding class="height-img">
-        <img src="assets/busino/btn_favourite.png">
+        <img src="assets/busino/homepage/btn_favourite.png">
         <!-- <ion-icon name="ios-star-outline" class=""></ion-icon> -->
     </div>
 </div>
