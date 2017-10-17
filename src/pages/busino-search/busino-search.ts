@@ -7,6 +7,8 @@ import {
   LatLng
 } from '@ionic-native/google-maps';
 
+import { NSegmentItem } from '../../components/n-segment/n-segment';
+
 import { Utils } from '../../providers/app-utils';
 
 import { BusinoModule } from '../../providers/busino/busino';
@@ -23,14 +25,21 @@ declare var google;
 export class BusinoSearchPage {
   @ViewChild("mSearchBar") mSearchbar: Searchbar;
   @ViewChild('map-listpage') mapElement: ElementRef;
-  map: any;
+  map: GoogleMap;
 
   // header contributes
-  title = "Tra cứu";
+  title: string = 'Tra cứu';
+  segments: Array<NSegmentItem> = [
+    { text: "Tuyến buýt", selectedImg: "", unSelectedImg: "" },
+    { text: "Điểm dừng", selectedImg: "", unSelectedImg: "" }
+  ];
   root = "BusinoHomePage";
-  segments = ["Tuyến buýt", "Điểm dừng"];
-  bgcolor = "#FDC21E";
-  color = "white";
+  bgimg = "assets/busino/homepage/top_bar.png";
+  bgColor = "white";
+  color: string = 'white';
+  btmColor = "#FAC132";
+  rgtColor = "lightgrey";
+  popData: any;
 
   // searchbar contributes
   mSearchInput: string = "";
@@ -67,8 +76,8 @@ export class BusinoSearchPage {
   }
 
   ionViewDidEnter() {
-    this.initMap();
-    // this.loadMap();
+    // this.initMap();
+    this.loadMap();
   }
   ionViewDidLeave() {
   }
@@ -117,6 +126,8 @@ export class BusinoSearchPage {
           }
         }
         this.map.setOptions(mapOptions);
+        this.createStation();
+
       });
     }
     catch (e) {
@@ -125,10 +136,13 @@ export class BusinoSearchPage {
     }
   }
 
+  isAnimate = false;
   animateCamera(location: LatLng) {
     this.map.animateCamera({
       target: location,
       duration: 400
+    }).then(() => {
+      this.isAnimate = false;
     });
   }
 
@@ -243,66 +257,48 @@ export class BusinoSearchPage {
   }
 
 
+  onClickStation(station: Station) {
+    this.updateCurrentStation(station);
+  }
+
   currentStation: Station = new Station;
   currentMarker: Marker;
   isAddingMarker: boolean = false;
-  onClickStation(station: Station) {
-    console.log(station);
-    console.log(!this.isAddingMarker);
-
-    if (!this.isAddingMarker) {
-
-      this.isAddingMarker = true;
-
-      this.rmCurrentStation();
-
-      let mMarkerOptions: MarkerOptions = {
-        position: station.location,
-        title: station.name
-      }
-
-      if (this.map) {
-        this.map.addMarker(mMarkerOptions).then((marker: Marker) => {
-          this.animateCamera(station.location);
-          setTimeout(() => {
-            this.isAddingMarker = false;
-          }, 400)
-          marker.showInfoWindow();
-
-          marker.on(GoogleMapsEvent.INFO_CLICK).subscribe((latLng: LatLng) => {
-            console.log("GoogleMapsEvent.INFO_CLICK");
-            this.viewStationDetail(station);
-            marker.hideInfoWindow();
-          });
-          marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe((latLng: LatLng) => {
-            console.log("GoogleMapsEvent.MARKER_CLICK");
-            marker.showInfoWindow();
-          });
-
-          this.currentStation = station;
-          this.currentMarker = marker;
-        });
-      }
+  createStation() {
+    let mMarkerOptions: MarkerOptions = {
+      position: new LatLng(21.027764, 105.834160),
+      title: "Hanoi",
+      visible: false
     }
-    else {
-      this.viewStationDetail(station);
+    if (this.map) {
+      this.map.addMarker(mMarkerOptions).then((marker: Marker) => {
+        marker.showInfoWindow();
+
+        this.currentMarker = marker;
+
+        marker.on(GoogleMapsEvent.INFO_CLICK).subscribe((latLng: LatLng) => {
+          this.viewStationDetail(this.currentStation);
+          marker.hideInfoWindow();
+        });
+        marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe((latLng: LatLng) => {
+          marker.showInfoWindow();
+        });
+      });
     }
   }
 
   updateCurrentStation(station) {
-    this.currentStation = station;
-    this.currentMarker.setTitle(station.name);
-    this.currentMarker.showInfoWindow();
-    this.currentMarker.setPosition(station.location);
-    this.currentMarker.on(GoogleMapsEvent.INFO_CLICK).subscribe((latLng: LatLng) => {
-      console.log("GoogleMapsEvent.INFO_CLICK");
-      this.viewStationDetail(station);
+    if (!this.isAnimate) {
+      this.isAnimate = true;
+
       this.currentMarker.hideInfoWindow();
-    });
-    this.currentMarker.on(GoogleMapsEvent.MARKER_CLICK).subscribe((latLng: LatLng) => {
-      console.log("GoogleMapsEvent.MARKER_CLICK");
+      this.currentStation = station;
+      this.currentMarker.setTitle(station.name);
+      this.currentMarker.setPosition(station.location);
+      this.currentMarker.setVisible(true);
       this.currentMarker.showInfoWindow();
-    });
+      this.animateCamera(station.location);
+    }
   }
 
   rmCurrentStation() {

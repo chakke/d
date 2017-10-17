@@ -10,6 +10,7 @@ import {
 
 import { BusinoModule } from '../../providers/busino/busino';
 import { Station } from '../../providers/busino/classes/station';
+import { Location } from '../../providers/busino/classes/location';
 import { NSegmentItem } from '../../components/n-segment/n-segment';
 
 
@@ -36,18 +37,16 @@ export class BusinoHomePage {
   mShouldShowCancel: boolean = false;
   isSearching: boolean = false;
 
-  currentView: number = 0;
+  currentView: number = 0; // followBus: 0, findPath: 1
   blockCameraEnd: boolean = true;
 
   // data
-  from = {
-    place: "",
-    latlng: new LatLng(0, 0)
-  }
-  to = {
-    place: "",
-    latlng: new LatLng(0, 0)
-  }
+  from: Location = new Location();
+  to: Location = new Location();
+  // to = {
+  //   place: "",
+  //   latlng: new LatLng(0, 0)
+  // }
 
   stationsAround: Array<Station> = [];
   //-----------------
@@ -59,6 +58,8 @@ export class BusinoHomePage {
     public mBusinoModule: BusinoModule,
     public mMenuController: MenuController) {
     this.resetFindData();
+    this.from.onResponseData("", new LatLng(0, 0));
+    this.to.onResponseData("", new LatLng(0, 0));
   }
 
 
@@ -154,7 +155,9 @@ export class BusinoHomePage {
           }
 
           this.findStationsAround(cameraPosition[0].target);
-          this.showStations();
+          if (this.currentView == 0) {
+            this.showStations();
+          }
         })
       });
 
@@ -194,10 +197,12 @@ export class BusinoHomePage {
 
   onChangeView(view) {
     this.currentView = view;
-    if(view == 0){
+    if (view == 0) {
       this.showStations();
-    }else{
+      this.hideLocation();
+    } else {
       this.hideStations();
+      this.unhideLocation();
     }
   }
 
@@ -254,7 +259,7 @@ export class BusinoHomePage {
 
           marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe((latLng: LatLng) => {
             // this.navCtrl.push("BusinoFollowVehiclePage", { stations: busStops });
-            this.blockCameraEnd = true;
+            // this.blockCameraEnd = true;
           });
         });
       }
@@ -264,22 +269,23 @@ export class BusinoHomePage {
     });
   }
 
-  hideStations(){
+  hideStations() {
     this.stationsAround.forEach(station => {
-      station.marker.setVisible(true);
+      station.marker.setVisible(false);
     });
   }
 
   switchable = false;
   onClickSwitch() {
     if (this.switchable) {
-      let temp: any = this.from.place
-      this.from.place = this.to.place;
-      this.to.place = temp;
+      let temp: Location = this.from;
+      this.from = this.to;
+      this.to = temp;
 
-      temp = this.from.latlng
-      this.from.latlng = this.to.latlng;
-      this.to.latlng = temp;
+      this.switchIcon();
+      // temp.onResponseData(this.from.name, this.from.latlng);
+      // this.from.onResponseData(this.to.name, this.to.latlng);
+      // this.to.onResponseData(temp.name, temp.latlng);
     }
   }
 
@@ -302,25 +308,101 @@ export class BusinoHomePage {
 
   resetFindData() {
     this.switchable = false;
-    this.from.place = "";
-    this.from.latlng = new LatLng(0, 0);
-    this.to.place = "";
-    this.to.latlng = new LatLng(0, 0);
+    this.from.resetData();
+    this.to.resetData();
   }
 
   setFindData(data) {
     this.switchable = true;
     if (data['type'] == this.FROM) {
-      this.from.place = data['place'];
-      this.from.latlng = data['latlng'];
+      this.from.onResponseData(data['place'], data['latlng']);
+      this.showLocation(this.from, this.FROM);
     }
     else {
-      this.to.place = data['place'];
-      this.to.latlng = data['latlng'];
+      this.to.onResponseData(data['place'], data['latlng']);
+      this.showLocation(this.to, this.TO);
     }
   }
 
+  showLocation(location: Location, type: number) {
+    let marKerOptions: MarkerOptions = {
+      position: location.latlng,
+      visible: true,
+      title: location.name,
+      icon: {
+        url: 'assets/busino/homepage/' + (type == this.FROM ? 'marker_departure.png' : 'marker_arrival.png'),// + (type == this.FROM) ? 'marker_departure.png' : 'marker_arrival.png',
+        size: {
+          width: 20,
+          height: 20
+        }
+      },
+      zIndex: 0
+    };
 
+    if (this.map) {
+      this.map.addMarker(marKerOptions).then((marker: Marker) => {
+        location.setMarker(marker);
+
+        if (type == this.TO) {
+          marker.setIconAnchor(10, 20);
+        }
+        else {
+          marker.setIconAnchor(10, 10);
+        }
+
+        marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe((latLng: LatLng) => {
+          // this.navCtrl.push("BusinoFollowVehiclePage", { stations: busStops });
+          // this.blockCameraEnd = true;
+        });
+        this.animateCamera(location.latlng);
+      });
+    }
+  }
+
+  unhideLocation() {
+    if (this.from.marker) {
+      this.from.marker.setVisible(true);
+    }
+    if (this.to.marker) {
+      this.to.marker.setVisible(true);
+    }
+  }
+
+  hideLocation() {
+    if (this.from.marker) {
+      this.from.marker.setVisible(false);
+    }
+    if (this.to.marker) {
+      this.to.marker.setVisible(false);
+    }
+  }
+
+  switchIcon() {
+    if (this.from.marker) {
+      this.from.marker.setIcon({
+        url: 'assets/busino/homepage/marker_departure.png',
+        size: {
+          width: 20,
+          height: 20
+        }
+      });
+      this.from.marker.setIconAnchor(10, 10);
+    }
+    if (this.to.marker) {
+      this.to.marker.setIcon({
+        url: 'assets/busino/homepage/marker_arrival.png',
+        size: {
+          width: 20,
+          height: 20
+        }
+      });
+      this.to.marker.setIconAnchor(10, 20);
+    }
+  }
+
+  onClickSearchStation() {
+
+  }
 
 
 

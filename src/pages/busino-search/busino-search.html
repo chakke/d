@@ -1,8 +1,8 @@
 <ion-content id="main-content" no-bounce>
     <ion-list [ngClass]="virtualClassBr" approxItemHeight="50px" [virtualScroll]="currentBrData">
         <ion-item *virtualItem="let item" class="a3-container" (tap)="onClickItem(item)">
-            <div class="item-code a3-container a3-justify-center a3-items-center a1-circle">
-                {{item.mCode}}
+            <div class="item-code a3-container a3-justify-center a3-items-center a1-circle" [class.]>
+                <span [class.font-1]="item.mCode.length==3" [class.font-08]="item.mCode.length>3">{{item.mCode}}</span>
             </div>
             <div class="a3-container a3-wrap a3-items-center item-text">
                 <div class="a1-text-left">{{item.mName}}</div>
@@ -10,11 +10,11 @@
         </ion-item>
     </ion-list>
     <ion-list [ngClass]="virtualClassBs" approxItemHeight="30px" [virtualScroll]="currentBsData">
-        <ion-item *virtualItem="let item" class="a3-container" (tap)="onClickStation(item)">
-            <div class="item-code a3-container a3-justify-center a3-items-center a1-circle">
-                11
+        <ion-item *virtualItem="let item" class="a3-container">
+            <div class="item-icon a3-container a3-justify-center a3-items-center a1-circle">
+                <img src="assets/busino/searchpage/icon_busstop_small.png">
             </div>
-            <div class="a3-container a3-wrap a3-items-center item-text">
+            <div class="a3-container a3-wrap a3-items-center item-text" (tap)="onClickStation(item)">
                 <div class="item-content-detail a3-container a1-width-100">
                     <div class="a1-text-left bs-name">{{item.name}}</div>
                 </div>
@@ -22,11 +22,14 @@
                     <div class="a1-text-left bs-fleetover">{{item.fleetOver}}</div>
                 </div>
             </div>
+            <div class="item-icon a3-container a3-justify-center a3-items-center a1-circle" style="padding: 8px" (tap)="viewStationDetail(item)">
+                <img src="assets/busino/searchpage/btn_detail.png">
+            </div>
         </ion-item>
     </ion-list>
 </ion-content>
 <div #map id="map-listpage"></div>
-<n-header-segment [title]="title" [segments]="segments" [root]="root" [bgcolor]="bgcolor" [color]="color" (segmentIndex)="onChangeView($event)"></n-header-segment>
+<n-header-segment [bgimg]="bgimg" [title]="title" [segments]="segments" [root]="root" [bgColor]="bgColor" [color]="color" [btmColor]="btmColor" [rgtColor]="rgtColor" (segmentIndex)="onChangeView($event)"></n-header-segment>
 <div class="search-box-container a3-container a3-items-center a3-justify-center a1-absolute">
     <ion-searchbar #mSearchBar id="a-searchbar" [(ngModel)]="mSearchInput" [showCancelButton]="mShouldShowCancel" (ionInput)="onSearchInput()" (ionCancel)="onSearchCancel()" [placeholder]="mPlaceholder" (tap)="scrollToTop()"> </ion-searchbar>
 </div>

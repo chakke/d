@@ -22,11 +22,6 @@ export class NHeaderSegmentComponent {
 
   @Output() segmentIndex = new EventEmitter<number>();
 
-
-  // @Input("segments") segments: Array<NSegmentItem> = [];
-  // @Input("bottomColor") btmColor: string = '';
-  // @Input("rightColor") rgtColor: string = '';
-
   constructor(public mNavController: NavController, public mViewController: ViewController) {
   }
 

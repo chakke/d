@@ -22,10 +22,10 @@
                             </div>
                             <div class="a3-flex-1" style="padding: 1px; overflow: hidden">
                                 <div class="input-container a3-container a3-items-center" style="border-bottom: 1px solid lightgrey" (tap)="onClickFindPath(FROM)">
-                                    <span class="a1-text-ellipsis">{{from.place?from.place:'Chọn điểm đi'}}</span>
+                                    <span class="a1-text-ellipsis">{{from.name?from.name:'Chọn điểm đi'}}</span>
                                 </div>
                                 <div class="input-container a3-container a3-items-center" (tap)="onClickFindPath(TO)">
-                                    <span class="a1-text-ellipsis">{{to.place?to.place:'Chọn điểm đến'}}</span>
+                                    <span class="a1-text-ellipsis">{{to.name?to.name:'Chọn điểm đến'}}</span>
                                 </div>
                             </div>
                             <div padding class="img-container a3-container a3-items-center a3-justify-center" (tap)="onClickSwitch()">

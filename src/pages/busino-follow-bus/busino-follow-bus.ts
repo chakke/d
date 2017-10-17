@@ -5,6 +5,8 @@ import { BusinoModule } from '../../providers/busino/busino';
 import { Station } from '../../providers/busino/classes/station';
 import { Route } from '../../providers/busino/classes/route';
 
+import { NSegmentItem } from '../../components/n-segment/n-segment';
+
 @IonicPage()
 @Component({
   selector: 'page-busino-follow-bus',
@@ -12,11 +14,20 @@ import { Route } from '../../providers/busino/classes/route';
 })
 export class BusinoFollowBusPage {
   @ViewChild(Slides) slides: Slides;
-  title = "Theo dõi xe";
-  segments = ["Xe sắp đến", "Tuyến đi qua"];
-  bgcolor = "#FDC21E";
-  color = "white";
-  titleUrl = "assets/star.png"
+
+  // header contributes
+  title: string = 'Theo dõi xe';
+  segments: Array<NSegmentItem> = [
+    { text: "Xe sắp đến", selectedImg: "", unSelectedImg: "" },
+    { text: "Tuyến đi qua", selectedImg: "", unSelectedImg: "" }
+  ];
+  root = "BusinoHomePage";
+  bgimg = "assets/busino/homepage/top_bar.png";
+  bgColor = "white";
+  color: string = 'white';
+  btmColor = "#FAC132";
+  rgtColor = "lightgrey";
+  popData: any;
 
   mStation: Station = new Station();
   // mStation = {
@@ -69,6 +80,8 @@ export class BusinoFollowBusPage {
   }
 
   ionSlideDidChange() {
+    console.log("ionSlideDidChange");
+    
     this.setView(this.slides.getActiveIndex());
   }
 
@@ -76,7 +89,7 @@ export class BusinoFollowBusPage {
     // let modal = this.mModalController.create("BusinoRoutePage", { route: route });
 
     // modal.present({ animate: false }).then(() => {
-      this.navCtrl.push("BusinoRoutePage", { route: route }, { animate: false }).then(() => {
+    this.navCtrl.push("BusinoRoutePage", { route: route }, { animate: false }).then(() => {
 
       this.navCtrl.remove(this.mViewController.index, 1);
     });

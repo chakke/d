@@ -75,15 +75,15 @@ export class BusinoPickLocationPage {
     this.callback = this.navParams.get('callback');
     this.type = navParams.data['type'];
     if (navParams.data['detail']) {
-      this.targetAddress = navParams.data['detail'].place;
+      this.targetAddress = navParams.data['detail'].name;
       this.targetLatLng = navParams.data['detail'].latlng;
     }
 
-    if(this.targetAddress){
+    if (this.targetAddress) {
       console.log("this.targetAddressthis.targetAddressthis.targetAddress");
-      
+
     }
-    
+
 
     if (this.type == this.FROM) {
       this.title = "Chọn điểm đi"
@@ -180,7 +180,7 @@ export class BusinoPickLocationPage {
     console.log("removeMap");
 
     if (this.map) {
-      // this.map.remove();
+      this.map.remove();
     }
   }
 
@@ -215,17 +215,18 @@ export class BusinoPickLocationPage {
 
   isRequestingAddr = false;
   findAddress(location: LatLng) {
+    this.isRequestingAddr = true;
     this.targetAddress = "";
     this.targetLatLng = location;
     this.mBusinoModule.requestAddress(location).then(addr => {
       this.targetAddress = addr + "";
+      this.isRequestingAddr = false;
     });
 
   }
 
   confirmPlace() {
-    console.log("confirmPlace");
-    if (this.targetLatLng) {
+    if (!this.isRequestingAddr && this.targetAddress.length > 0) {
       this.sendData(this.packData(this.targetAddress, this.targetLatLng));
     }
   }
@@ -238,7 +239,7 @@ export class BusinoPickLocationPage {
 
       let elm = document.getElementById("main-content")
       if (view == this.VIEW_STATION) {
-        this.removeMap();
+        // this.removeMap();
         this.virtualClassBs = "";
       }
       else {
@@ -247,7 +248,7 @@ export class BusinoPickLocationPage {
           this.loadMap();
         }
         else {
-          this.removeMap();
+          // this.removeMap();
         }
       }
     }
@@ -340,15 +341,12 @@ export class BusinoPickLocationPage {
   }
 
   selectPlace(place) {
-
     this.popData = place;
     let geocoder = new google.maps.Geocoder;
 
     geocoder.geocode({ 'placeId': place.place_id }, (results, status) => {
       this.sendData(this.packData(place.description, new LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng())));
     })
-
-
   }
 
   packData(place: string, latLng: LatLng) {
@@ -361,7 +359,7 @@ export class BusinoPickLocationPage {
 
   // send data back
   sendData(data) {
-    this.callback(data).then(() => { this.navCtrl.pop({animate: false}) });
+    this.callback(data).then(() => { this.navCtrl.pop({ animate: false }) });
   }
 
   requestObject: any;

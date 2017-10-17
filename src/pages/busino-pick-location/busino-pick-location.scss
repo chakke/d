@@ -146,8 +146,14 @@ page-busino-pick-location {
             bottom: 16px;
             .accept-button {
                 height: 100%;
+                color: white;
+                font-weight: bold;
+                font-size: 1.2em;
                 background-color: #09BC7A;
                 border-radius: 50px;
+            }
+            .accept-button:active {
+                background-color: #106b49;
             }
             .mylocation {
                 padding: 8px;

@@ -16,6 +16,7 @@ page-busino-search {
         z-index: 100;
         padding: 8px 0;
         background: #e6e3e3;
+        box-shadow: 0px 2px 4px 1px lightgrey;
         #a-searchbar {
             border: none !important;
             background: transparent !important;
@@ -29,8 +30,10 @@ page-busino-search {
         ion-list {
             top: $search-header-height;
             .item-block {
+                font-size: 1em;
                 border-top: 0 !important;
-                height: 60px;
+                height: 70px;
+                border-bottom: 1px solid #dedede;
             }
             ion-item ion-label {
                 display: -webkit-box;
@@ -50,25 +53,32 @@ page-busino-search {
                     border-bottom: 0;
                 }
             }
+            ion-item:active {
+                background-color: #eae9e9;
+            }
         }
     }
     .item-code {
-        height: 3em;
-        width: 3em;
-        background: #FDC21E;
+        height: 2.5em;
+        width: 2.5em;
+        background: #ED5353;
         font-weight: bold;
+        color: white;
+    }
+    .item-code>span {
+        font-size: 1.2em;
+    }
+    .item-icon {
+        height: 2.5em;
+        width: 2.5em;
     }
     .item-text {
-        max-width: calc(100% - 4em);
-        width: calc(100% - 4em);
-        height: 100%;
+        max-width: calc(100% - 6em);
+        width: calc(100% - 6em);
         // font-size: .8em;
         white-space: normal;
         margin-left: 16px;
-        border-bottom: 1px solid #dedede;
-    }
-    .item-text:active {
-        background-color: #eae9e9;
+        // border-bottom: 1px solid #dedede;
     }
     .item-content-detail {
         // font-size: smaller;
@@ -91,6 +101,7 @@ page-busino-search {
     .bs-fleetover {
         font-size: .8em;
         color: grey;
+        width: 100%;
     }
     #map-listpage {
         width: 100%;
@@ -98,5 +109,11 @@ page-busino-search {
         background-color: black;
         position: absolute;
         bottom: 0;
+    }
+    .font-08 {
+        font-size: .8em !important;
+    }
+    .font-1 {
+        font-size: 1em !important;
     }
 }
