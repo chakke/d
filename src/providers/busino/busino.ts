@@ -241,4 +241,8 @@ export class BusinoModule {
     //   this.setCurrentAddress();
     // });
   }
+
+  requestSearchPath(from: LatLng, to: LatLng){
+    this.mBusinoHttpService.RequestBusSearchPath(from.lat, from.lng, to.lat, to.lng);
+  }
 }

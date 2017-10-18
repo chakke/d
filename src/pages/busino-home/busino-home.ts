@@ -291,7 +291,7 @@ export class BusinoHomePage {
 
   FROM = 1;
   TO = 2;
-  onClickFindPath(type) {
+  onPickLocation(type) {
     this.navCtrl.push("BusinoPickLocationPage", { type: type, detail: (type == this.FROM) ? this.from : this.to, callback: this.getData }, { animate: false }).then(() => {
       // this.inVisibleMap();
     })
@@ -402,6 +402,12 @@ export class BusinoHomePage {
 
   onClickSearchStation() {
 
+  }
+
+  onClickFindPath(){
+    console.log("onClickFindPath");
+    
+    
   }
 
 

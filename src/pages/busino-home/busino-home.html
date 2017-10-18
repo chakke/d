@@ -21,10 +21,10 @@
                                 </div>
                             </div>
                             <div class="a3-flex-1" style="padding: 1px; overflow: hidden">
-                                <div class="input-container a3-container a3-items-center" style="border-bottom: 1px solid lightgrey" (tap)="onClickFindPath(FROM)">
+                                <div class="input-container a3-container a3-items-center" style="border-bottom: 1px solid lightgrey" (tap)="onPickLocation(FROM)">
                                     <span class="a1-text-ellipsis">{{from.name?from.name:'Chọn điểm đi'}}</span>
                                 </div>
-                                <div class="input-container a3-container a3-items-center" (tap)="onClickFindPath(TO)">
+                                <div class="input-container a3-container a3-items-center" (tap)="onPickLocation(TO)">
                                     <span class="a1-text-ellipsis">{{to.name?to.name:'Chọn điểm đến'}}</span>
                                 </div>
                             </div>
@@ -34,7 +34,7 @@
                         </div>
                         <div class="buttons-container a1-width-100 a3-container a3-items-center a3-justify-center">
                             <div class="btn" style="background-color: #FAC132">Xem lịch sử tìm đường</div>
-                            <div class="btn" style="background-color: #EA5153">TÌM ĐƯỜNG</div>
+                            <div class="btn" style="background-color: #EA5153" (tap)="onClickFindPath()">TÌM ĐƯỜNG</div>
                         </div>
                     </div>
                 </div>

@@ -65,7 +65,7 @@ export class BusinoHttpService {
     // console.log("2.3");
     // this.RequestBusComing("3", "4", 0);
     console.log("2.4");
-    this.RequestBusSearchPath("21.027764", "105.834160", "21.038559", "105.847124");
+    this.RequestBusSearchPath(21.027764, 105.834160, 21.038559, 105.847124);
     console.log("2.6");
     this.RequestBusStopInfo("3");
     // console.log("2.7");
@@ -109,13 +109,13 @@ export class BusinoHttpService {
   }
 
   /**Request 2.4  Tìm kiếm đường đi*/
-  RequestBusSearchPath(pickup_lat: string, pickup_lng: string, des_lat: string, des_lng: string) {
+  RequestBusSearchPath(pickup_lat: number, pickup_lng: number, des_lat: number, des_lng: number) {
     return this.requestGet(this.SERVICE_URL + BusinoCmd.SEARCH_PATH, ParamBuilder.builder()
       .add(BusinoParamsKey.PICKUP_LAT, pickup_lat)
       .add(BusinoParamsKey.PICKUP_LNG, pickup_lng)
       .add(BusinoParamsKey.DES_LAT, des_lat)
       .add(BusinoParamsKey.DES_LNG, des_lng)
-      .add(BusinoParamsKey.SIGN, Md5.hashStr(pickup_lat + des_lat + "" + this.CLIENT_KEY))
+      .add(BusinoParamsKey.SIGN, Md5.hashStr(pickup_lat + "" + des_lat + "" + this.CLIENT_KEY))
       .build());
   }
 
@@ -179,11 +179,11 @@ export class BusinoHttpService {
 
   RequestBustUpdateLocation(routeCode: string, bks: string, lat: number, lng: number, direct_type: number) {
     return this.requestGet("http://125.212.192.94:3000/" + BusinoCmd.BUS_UPDATE_LOCATION, ParamBuilder.builder()
-    .add(BusinoParamsKey.ROUTE_CODE, routeCode)
-    .add(BusinoParamsKey.BKS, bks)
-    .add(BusinoParamsKey.LAT, lat)
-    .add(BusinoParamsKey.LNG, lng)
-    .add(BusinoParamsKey.DIRECT_TYPE, direct_type)
-    .build());
+      .add(BusinoParamsKey.ROUTE_CODE, routeCode)
+      .add(BusinoParamsKey.BKS, bks)
+      .add(BusinoParamsKey.LAT, lat)
+      .add(BusinoParamsKey.LNG, lng)
+      .add(BusinoParamsKey.DIRECT_TYPE, direct_type)
+      .build());
   }
 }
